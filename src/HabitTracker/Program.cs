@@ -26,6 +26,7 @@
         /// Initializes a new instance of the <see cref="Habit"/> class.
         /// </summary>
         /// <param name="name">The name of the habit</param>
+        /// <returns>A new instance of the <see cref="Habit"/> class.</returns>
         public Habit(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -41,6 +42,7 @@
         /// </summary>
         /// <param name="name">The name of the habit</param>
         /// <param name="completions">The completion dates of the habit</param>
+        /// <returns>A new instance of the <see cref="Habit"/> class.</returns>
         public Habit(string name, params DateTime[] completions)
         {
             if (string.IsNullOrWhiteSpace(name))
