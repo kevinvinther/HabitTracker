@@ -7,10 +7,8 @@ namespace HabitTracker.Tests
         [Fact]
         public void Constructor_ShouldInitializeWithName()
         {
-            // Arrange
             var habit = new Habit("Exercise");
 
-            // Act & Assert
             Assert.Equal("Exercise", habit.Name);
         }
 
