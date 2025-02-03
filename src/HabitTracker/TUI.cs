@@ -39,6 +39,7 @@ namespace HabitTracker
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("1. Add new habit");
                 Console.WriteLine("2. Remove a habit");
+                Console.WriteLine("9. Quit Program");
 
                 string? answer = Console.ReadLine();
 
@@ -52,6 +53,8 @@ namespace HabitTracker
                         case 2:
                             RemoveHabit();
                             break;
+                        case 9:
+                            return;
                         default:
                             Console.WriteLine("You must choose a valid option!");
                             break;
