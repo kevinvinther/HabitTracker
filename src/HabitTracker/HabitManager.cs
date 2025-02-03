@@ -36,8 +36,24 @@ namespace HabitTracker
                 if (Habits.Any(h => h.Name.Equals(habit.Name, StringComparison.OrdinalIgnoreCase)))
                 {
                     throw new InvalidOperationException($"A Habit with name '{habit.Name}' already exists.");
+                } else {
+                    Habits.Add(habit);
                 }
-                Habits.Add(habit);
+            }
+        }
+
+        /// <summary>
+        /// Removes habits from the manager.
+        /// </summary>
+        /// <param name="habits">The habits to be removed</param>
+        public void RemoveHabits(params Habit[] habits) {
+            foreach (var habit in habits) {
+                if (!Habits.Any(h => h.Name.Equals(habit.Name, StringComparison.OrdinalIgnoreCase)))
+                {
+                    throw new InvalidOperationException($"Habit doesn't exist in directory!");
+                } else {
+                    Habits.Remove(habit);
+                }
             }
         }
     }
