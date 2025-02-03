@@ -96,7 +96,7 @@ namespace HabitTracker
             string? delete = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(delete))
             {
-                Habit? toBeDeleted = Manager.Habits.FirstOrDefault(h => h.Name == delete);
+                Habit? toBeDeleted = Manager.Habits.FirstOrDefault(h => h.Name.ToLower() == delete.ToLower());
                 if (toBeDeleted != null)
                 {
                     Manager.RemoveHabits(toBeDeleted);
