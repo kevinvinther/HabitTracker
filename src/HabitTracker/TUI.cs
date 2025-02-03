@@ -1,5 +1,7 @@
 namespace HabitTracker
 {
+    using System.Linq;
+
     public class TUI
     {
         public HabitManager Manager;
@@ -20,8 +22,8 @@ namespace HabitTracker
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("=======================");
-                Console.WriteLine("=    HABIT TRACKER    ="); 
-                Console.WriteLine("======================="); 
+                Console.WriteLine("=    HABIT TRACKER    =");
+                Console.WriteLine("=======================");
                 Console.ForegroundColor = ConsoleColor.White;
                 if (Manager.Habits.Any())
                 {
@@ -36,29 +38,51 @@ namespace HabitTracker
                 Console.WriteLine("Please choose your option:");
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("1. Add new habit");
+                Console.WriteLine("2. Remove a habit");
 
                 string? answer = Console.ReadLine();
 
                 if (int.TryParse(answer, out int option))
                 {
-                    switch (option) {
+                    switch (option)
+                    {
                         case 1:
                             Console.WriteLine("Please enter the name of your new habit: ");
                             string? name = Console.ReadLine();
-                            if (!string.IsNullOrWhiteSpace(name)) {
+                            if (!string.IsNullOrWhiteSpace(name))
+                            {
                                 Habit newHabit = new Habit(name);
                                 Manager.AddHabits(newHabit);
-                            } else {
+                            }
+                            else
+                            {
                                 Console.WriteLine("Habit name cannot be empty or null.");
                             }
-
                             break;
-                        default: 
+                        case 2:
+                            Console.WriteLine("Please enter the name of the habit you want to remove: ");
+                            string? delete = Console.ReadLine();
+                            if (!string.IsNullOrWhiteSpace(delete))
+                            {
+                                Habit? toBeDeleted = Manager.Habits.FirstOrDefault(h => h.Name == delete);
+                                if (toBeDeleted != null)
+                                {
+                                    Manager.RemoveHabits(toBeDeleted);
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Could not find habit with name '{delete}'!");
+                                }
+                            }
+                            break;
+                        default:
                             Console.WriteLine("You must choose a valid option!");
                             break;
 
-                    }                         
-                } else {
+                    }
+                }
+                else
+                {
                     Console.WriteLine("Input cannot be empty and must be a number.");
                 }
             }
