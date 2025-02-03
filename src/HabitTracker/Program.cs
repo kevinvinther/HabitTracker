@@ -63,6 +63,14 @@
         }
 
         /// <summary>
+        /// Removes a completion date from the habit.
+        /// </summary>
+        /// <param name="date">The date-time of the completion.</param>
+        public void RemoveCompletion(DateTime date) {
+            Completions.Remove(date);
+        }
+
+        /// <summary>
         /// Prints a list of all completion dates, if they exist.
         /// </summary>
         public void PrintCompletionDates()

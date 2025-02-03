@@ -47,16 +47,36 @@ namespace HabitTracker.Tests
         [Fact]
         public void AddCompletion_ShouldAddNewCompletion()
         {
-            // Arrange
             var habit = new Habit("Exercise");
             var newCompletion = new DateTime(2024, 1, 1);
 
-            // Act
             habit.AddCompletion(newCompletion);
 
-            // Assert
             Assert.Single(habit.Completions);
             Assert.Contains(newCompletion, habit.Completions);
+        }
+
+        [Fact]
+        public void RemoveCompletion_ShouldRemoveCompletion()
+        {
+            var habit = new Habit("Exercise");
+            var newCompletion = new DateTime(2024, 1, 1);
+
+            habit.AddCompletion(newCompletion);
+            habit.RemoveCompletion(newCompletion);
+
+            Assert.Empty(habit.Completions);
+        }
+
+        [Fact]
+        public void RemoveCompletion_ShouldNotThrow_ForMissingCompletion()
+        {
+            var habit = new Habit("Exercise");
+            var completion = new DateTime(2024, 1, 1);
+
+            habit.RemoveCompletion(completion);
+
+            Assert.Empty(habit.Completions);
         }
     }
 }
