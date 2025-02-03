@@ -47,33 +47,10 @@ namespace HabitTracker
                     switch (option)
                     {
                         case 1:
-                            Console.WriteLine("Please enter the name of your new habit: ");
-                            string? name = Console.ReadLine();
-                            if (!string.IsNullOrWhiteSpace(name))
-                            {
-                                Habit newHabit = new Habit(name);
-                                Manager.AddHabits(newHabit);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Habit name cannot be empty or null.");
-                            }
+                            AddHabit();
                             break;
                         case 2:
-                            Console.WriteLine("Please enter the name of the habit you want to remove: ");
-                            string? delete = Console.ReadLine();
-                            if (!string.IsNullOrWhiteSpace(delete))
-                            {
-                                Habit? toBeDeleted = Manager.Habits.FirstOrDefault(h => h.Name == delete);
-                                if (toBeDeleted != null)
-                                {
-                                    Manager.RemoveHabits(toBeDeleted);
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"Could not find habit with name '{delete}'!");
-                                }
-                            }
+                            RemoveHabit();
                             break;
                         default:
                             Console.WriteLine("You must choose a valid option!");
@@ -87,5 +64,45 @@ namespace HabitTracker
                 }
             }
         }
+
+        /// <summary>
+        /// Wrapper to add habit in the TUI. Handles empty input.
+        /// </summary>
+        private void AddHabit()
+        {
+            Console.WriteLine("Please enter the name of your new habit: ");
+            string? name = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                Habit newHabit = new Habit(name);
+                Manager.AddHabits(newHabit);
+            }
+            else
+            {
+                Console.WriteLine("Habit name cannot be empty or null.");
+            }
+        }
+
+        /// <summary>
+        /// Wrapper to remove habit in the TUI. Checks if habit exists using Linq.
+        /// </summary>
+        private void RemoveHabit()
+        {
+            Console.WriteLine("Please enter the name of the habit you want to remove: ");
+            string? delete = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(delete))
+            {
+                Habit? toBeDeleted = Manager.Habits.FirstOrDefault(h => h.Name == delete);
+                if (toBeDeleted != null)
+                {
+                    Manager.RemoveHabits(toBeDeleted);
+                }
+                else
+                {
+                    Console.WriteLine($"Could not find habit with name '{delete}'!");
+                }
+            }
+        }
+
     }
 }
