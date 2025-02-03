@@ -20,6 +20,7 @@ namespace HabitTracker
         {
             while (true)
             {
+                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("=======================");
                 Console.WriteLine("=    HABIT TRACKER    =");
