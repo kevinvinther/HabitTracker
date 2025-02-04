@@ -56,5 +56,30 @@ namespace HabitTracker
                 }
             }
         }
+
+        /// <summary>
+        /// Add a completion time to the habit.
+        /// </summary>
+        /// <param name="habit">The habit you want to add a completion to.</param>
+        /// <param name="dateTimes">The completion time.</param>
+        public void AddCompletionTime(Habit habit, params DateTime[] dateTimes) {
+            foreach (var t in dateTimes) {
+                // No if here, if it for some reason bugs, you should rather
+                // have two identical completions, than one completion when
+                // you've actually done two.
+                habit.Completions.Add(t);
+            }
+        }
+
+        /// <summary>
+        /// Remove a completion from specified habit.
+        /// </summary>
+        /// <param name="habit">The habit you want to remove a completion from.</param>
+        /// <param name="dateTime">The completion time.</param>
+        /// <returns></returns>
+        public void RemoveCompletionTime(Habit habit, DateTime dateTime) {
+            // Removes the first occurence
+            habit.RemoveCompletion(dateTime);
+        }
     }
 }

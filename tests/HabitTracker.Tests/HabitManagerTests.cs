@@ -112,5 +112,61 @@ namespace HabitTracker.Tests
             Assert.Equal("Habit doesn't exist in directory!", exception.Message);
         }
 
+        [Fact]
+        public void AddCompletionTime_ShouldAddCompletion_WithOneTime()
+        {
+            HabitManager manager = new HabitManager();
+
+            Habit anki = new Habit("Anki");
+            manager.AddHabits(anki);
+
+            Assert.Empty(manager.Habits[0].Completions);
+
+            DateTime dt = new DateTime(2024, 1, 1, 10, 30, 31);
+            manager.AddCompletionTime(anki, dt);
+
+            List<DateTime> times = new List<DateTime> { dt };
+
+            Assert.Equal(manager.Habits[0].Completions, times);
+        }
+
+        [Fact]
+        public void AddCompletionTime_ShouldAddCompletion_WithMultipleTimes()
+        {
+            HabitManager manager = new HabitManager();
+
+            Habit anki = new Habit("Anki");
+            manager.AddHabits(anki);
+
+            Assert.Empty(manager.Habits[0].Completions);
+
+            DateTime[] dateTimes = [
+                new DateTime(2024, 1, 1, 10, 30, 31),
+                new DateTime(2024, 1, 1, 10, 30, 32),
+                new DateTime(2024, 1, 1, 10, 30, 33),
+                new DateTime(2024, 1, 1, 10, 30, 34)
+            ];
+            manager.AddCompletionTime(anki, dateTimes);
+
+            Assert.Equal(manager.Habits[0].Completions, dateTimes);
+        }
+
+        [Fact]
+        public void RemoveCompletionTime_ShouldRemoveCompletion_WithNormalInput()
+        {
+            HabitManager manager = new HabitManager();
+
+            Habit anki = new Habit("Anki");
+            manager.AddHabits(anki);
+
+            DateTime dt = new DateTime(2024, 1, 1, 1, 1, 1);
+            manager.AddCompletionTime(anki, dt);
+
+            manager.RemoveCompletionTime(anki, dt);
+
+            Assert.Empty(manager.Habits[0].Completions);
+
+        }
+
     }
 }
