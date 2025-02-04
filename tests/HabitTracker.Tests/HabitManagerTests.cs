@@ -168,5 +168,18 @@ namespace HabitTracker.Tests
 
         }
 
+        [Fact]
+        public void RemoveCompletionTime_ShouldReturnFalse_WhenRemovingBadValue()
+        {
+            HabitManager manager = new HabitManager();
+
+            Habit anki = new Habit("Anki");
+            manager.AddHabits(anki);
+
+            DateTime dt = new DateTime(2024, 1, 1, 1, 1, 1);
+
+            Assert.False(manager.RemoveCompletionTime(anki, dt));
+        }
+
     }
 }

@@ -76,10 +76,10 @@ namespace HabitTracker
         /// </summary>
         /// <param name="habit">The habit you want to remove a completion from.</param>
         /// <param name="dateTime">The completion time.</param>
-        /// <returns></returns>
-        public void RemoveCompletionTime(Habit habit, DateTime dateTime) {
+        /// <returns>True if sucesfully removed, false otherwise.</returns>
+        public bool RemoveCompletionTime(Habit habit, DateTime dateTime) {
             // Removes the first occurence
-            habit.RemoveCompletion(dateTime);
+            return habit.RemoveCompletion(dateTime);
         }
     }
 }
