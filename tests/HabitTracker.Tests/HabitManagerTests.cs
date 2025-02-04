@@ -98,7 +98,6 @@ namespace HabitTracker.Tests
         }
 
 
-        /* throw new InvalidOperationException($"Habit doesn't exist in directory!"); */
         [Fact]
         public void RemoveHabits_ShouldThrow_WhenNoHabitExists()
         {
