@@ -53,6 +53,7 @@ namespace HabitTracker
         /// Removes a completion date from the habit.
         /// </summary>
         /// <param name="date">The date-time of the completion.</param>
+        /// <returns>True if succesfully removed, false if not.</returns>
         public bool RemoveCompletion(DateTime date)
         {
             return Completions.Remove(date);
