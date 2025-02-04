@@ -67,6 +67,17 @@ namespace HabitTracker.Tests
         }
 
         [Fact]
+        public void RemoveCompletion_ShouldReturnFalseOnBadRemoval()
+        {
+            // Bad removal in this case means the removal of an item not in the list.
+            var habit = new Habit("Exercise");
+            var newCompletion = new DateTime(2024, 1, 1);
+
+
+            Assert.False(habit.RemoveCompletion(newCompletion));
+        }
+
+        [Fact]
         public void RemoveCompletion_ShouldNotThrow_ForMissingCompletion()
         {
             var habit = new Habit("Exercise");
