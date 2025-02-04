@@ -6,7 +6,7 @@ namespace HabitTracker
     public class Habit
     {
         public string Name { get; private set; }
-        public List<DateTime> Completions { get; }
+        public List<DateTime> Completions { get; set; }
 
 
         /// <summary>
