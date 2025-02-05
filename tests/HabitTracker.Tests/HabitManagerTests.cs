@@ -180,6 +180,5 @@ namespace HabitTracker.Tests
 
             Assert.False(manager.RemoveCompletionTime(anki, dt));
         }
-
     }
 }
