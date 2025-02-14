@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace HabitTracker.Tests
 {
     public class HabitTests
@@ -7,7 +5,7 @@ namespace HabitTracker.Tests
         [Fact]
         public void Constructor_ShouldInitializeWithName()
         {
-            var habit = new Habit("Exercise");
+            var habit = new Habit(1, "Exercise");
 
             Assert.Equal("Exercise", habit.Name);
         }
@@ -18,14 +16,14 @@ namespace HabitTracker.Tests
         [InlineData("Meditate")]
         public void Constructor_ShouldAcceptDifferentNames(string name)
         {
-            var habit = new Habit(name);
+            var habit = new Habit(1, name);
             Assert.Equal(name, habit.Name);
         }
 
         [Fact]
         public void Constructor_ShouldThrowArgumentException()
         {
-            var exception = Assert.Throws<ArgumentException>(() => new Habit(""));
+            var exception = Assert.Throws<ArgumentException>(() => new Habit(1, ""));
             Assert.Equal("Name cannot be empty (Parameter 'name')", exception.Message);
         }
 
@@ -35,7 +33,7 @@ namespace HabitTracker.Tests
             var completion1 = new DateTime(2023, 12, 25);
             var completion2 = new DateTime(2023, 12, 31);
 
-            var habit = new Habit("Exercise", completion1, completion2);
+            var habit = new Habit(0, "Exercise", completion1, completion2);
 
             Assert.Equal(2, habit.Completions.Count);
             Assert.Contains(completion1, habit.Completions);
@@ -45,7 +43,7 @@ namespace HabitTracker.Tests
         [Fact]
         public void AddCompletion_ShouldAddNewCompletion()
         {
-            var habit = new Habit("Exercise");
+            var habit = new Habit(0, "Exercise");
             var newCompletion = new DateTime(2024, 1, 1);
 
             habit.AddCompletion(newCompletion);
@@ -57,7 +55,7 @@ namespace HabitTracker.Tests
         [Fact]
         public void RemoveCompletion_ShouldRemoveCompletion()
         {
-            var habit = new Habit("Exercise");
+            var habit = new Habit(0, "Exercise");
             var newCompletion = new DateTime(2024, 1, 1);
 
             habit.AddCompletion(newCompletion);
@@ -70,7 +68,7 @@ namespace HabitTracker.Tests
         public void RemoveCompletion_ShouldReturnFalseOnBadRemoval()
         {
             // Bad removal in this case means the removal of an item not in the list.
-            var habit = new Habit("Exercise");
+            var habit = new Habit(0, "Exercise");
             var newCompletion = new DateTime(2024, 1, 1);
 
 
@@ -80,7 +78,7 @@ namespace HabitTracker.Tests
         [Fact]
         public void RemoveCompletion_ShouldNotThrow_ForMissingCompletion()
         {
-            var habit = new Habit("Exercise");
+            var habit = new Habit(0, "Exercise");
             var completion = new DateTime(2024, 1, 1);
 
             habit.RemoveCompletion(completion);

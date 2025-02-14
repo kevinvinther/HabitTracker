@@ -9,15 +9,11 @@ namespace HabitTracker
         public TUI()
         {
             Manager = new HabitManager();
-            Habit anki = new Habit("Anki");
-            Habit exercise = new Habit("Exercise");
-            Habit coding = new Habit("Coding");
-            Habit walk = new Habit("Walk");
-            Manager.AddHabits(anki, exercise, coding, walk);
         }
 
         public void MainMenu()
         {
+            Manager.InitializeDatabase();
             while (true)
             {
                 Console.Clear();
@@ -26,10 +22,10 @@ namespace HabitTracker
                 Console.WriteLine("=    HABIT TRACKER    =");
                 Console.WriteLine("=======================");
                 Console.ForegroundColor = ConsoleColor.White;
-                if (Manager.Habits.Any())
+                if (Manager.GetHabits().Any())
                 {
                     Console.WriteLine("Current habits:");
-                    foreach (var habit in Manager.Habits)
+                    foreach (var habit in Manager.GetHabits())
                     {
                         string currentHabit = "= " + habit.Name.PadRight(20) + "=";
 
@@ -82,8 +78,8 @@ namespace HabitTracker
             string? name = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(name))
             {
-                Habit newHabit = new Habit(name);
-                Manager.AddHabits(newHabit);
+                Habit newHabit = new Habit(0, name);
+                Manager.AddHabit(newHabit);
             }
             else
             {
@@ -100,10 +96,10 @@ namespace HabitTracker
             string? delete = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(delete))
             {
-                Habit? toBeDeleted = Manager.Habits.FirstOrDefault(h => h.Name.ToLower() == delete.ToLower());
+                Habit? toBeDeleted = Manager.GetHabits().FirstOrDefault(h => h.Name.ToLower() == delete.ToLower());
                 if (toBeDeleted != null)
                 {
-                    Manager.RemoveHabits(toBeDeleted);
+                    Manager.RemoveHabit(toBeDeleted.Id);
                 }
                 else
                 {
@@ -119,7 +115,7 @@ namespace HabitTracker
         {
             Console.WriteLine("Please choose a habit: ");
             var i = 0;
-            foreach (var h in Manager.Habits)
+            foreach (var h in Manager.GetHabits())
             {
                 i += 1;
                 Console.WriteLine($"{i}: {h.Name}");
@@ -134,27 +130,27 @@ namespace HabitTracker
                 return;
             }
 
-            index -= 1; // Arrays are 0-indexed, but we present them as 1-indexed
+            var habitId = index - 1;
 
             Console.Clear();
-            var habit = Manager.Habits[index];
+            var habit = Manager.GetHabits()[habitId];
             habit.PrintCompletionDates();
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("1. Add Completion");
             Console.WriteLine("2. Remove Completion Date");
+            Console.WriteLine("9. Cancel");
 
-            success = Int32.TryParse(Console.ReadLine(), out index);
+            var _ = Int32.TryParse(Console.ReadLine(), out index);
 
             switch (index)
             {
                 case 1:
-                    habit.AddCompletion(DateTime.Now);
+                    Manager.AddCompletion(Manager.GetHabits()[habitId].Id, DateTime.Now);
                     break;
                 case 2:
                     RemoveCompletion(habit);
                     break;
                 default:
-                    Console.WriteLine("You must choose a number.");
                     return;
             }
         }
@@ -186,7 +182,7 @@ namespace HabitTracker
                 return;
             }
 
-            habit.RemoveCompletion(habit.Completions[index]);
+            Manager.RemoveCompletion(habit.Id, habit.Completions[index]);
 
             Console.WriteLine($"Completion {habit.Completions} deleted.");
             Console.WriteLine($"Press any key to continue");

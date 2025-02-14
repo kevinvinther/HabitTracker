@@ -5,6 +5,7 @@ namespace HabitTracker
     /// </summary>
     public class Habit
     {
+        public long Id { get; set; }
         public string Name { get; private set; }
         public List<DateTime> Completions { get; set; }
 
@@ -14,15 +15,8 @@ namespace HabitTracker
         /// </summary>
         /// <param name="name">The name of the habit</param>
         /// <returns>A new instance of the <see cref="Habit"/> class.</returns>
-        public Habit(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Name cannot be empty", nameof(name));
-            }
-            Name = name;
-            Completions = new List<DateTime>();
-        }
+        public Habit(long id, string name)
+            : this(id, name, []) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Habit"/> class.
@@ -30,12 +24,13 @@ namespace HabitTracker
         /// <param name="name">The name of the habit</param>
         /// <param name="completions">The completion dates of the habit</param>
         /// <returns>A new instance of the <see cref="Habit"/> class.</returns>
-        public Habit(string name, params DateTime[] completions)
+        public Habit(long id, string name, params DateTime[] completions)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("Name cannot be empty", nameof(name));
             }
+            Id = id;
             Name = name;
             Completions = new List<DateTime>(completions);
         }
