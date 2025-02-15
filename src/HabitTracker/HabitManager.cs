@@ -135,19 +135,24 @@ namespace HabitTracker
         {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
-
+            
+            using (var checkHabitCmd = connection.CreateCommand())
+            {
+                checkHabitCmd.CommandText = "SELECT COUNT(*) FROM Habits WHERE Id = @HabitId";
+                checkHabitCmd.Parameters.AddWithValue("@HabitId", habitId);
+                var count = Convert.ToInt32(checkHabitCmd.ExecuteScalar());
+            
+                if (count == 0)
+                {
+                    throw new InvalidOperationException($"Habit with ID {habitId} does not exist.");
+                }
+            }
+            
             using (var deleteHabitCmd = connection.CreateCommand())
             {
                 deleteHabitCmd.CommandText = "DELETE FROM Habits WHERE Id = @HabitId";
                 deleteHabitCmd.Parameters.AddWithValue("@HabitId", habitId);
                 deleteHabitCmd.ExecuteNonQuery();
-            }
-            
-            using (var deleteCompletionsCmd = connection.CreateCommand())
-            {
-                deleteCompletionsCmd.CommandText = "DELETE FROM Completions WHERE HabitId = @HabitId";
-                deleteCompletionsCmd.Parameters.AddWithValue("@HabitId", habitId);
-                deleteCompletionsCmd.ExecuteNonQuery();
             }
         }
 
