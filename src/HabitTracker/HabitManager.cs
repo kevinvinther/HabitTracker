@@ -10,6 +10,12 @@ namespace HabitTracker
         private readonly string _connectionString;
 
 
+        public HabitManager(String location = "habits.db")
+        {
+            location = "Data Source=" + location;
+            _connectionString = location;
+        }
+
         /// <summary>
         /// Creates the tables Habits and Completions, which contain respectively a habit, and the completions of a habit.
         /// </summary>
@@ -38,7 +44,13 @@ namespace HabitTracker
         /// Adds a new habit to the database.
         /// </summary>
         /// <param name="habit">The Habit to add to the database.</param>
-        public void AddHabit(Habit habit) {
+        public void AddHabit(Habit habit)
+        {
+            if (GetHabits().Any(h => h.Name == habit.Name))
+            {
+                throw new InvalidOperationException($"A habit with name '{habit.Name}' already exists.");
+            }
+            
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
