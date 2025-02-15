@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace HabitTracker
 {
     using Microsoft.Data.Sqlite;
@@ -158,15 +160,23 @@ namespace HabitTracker
 
         public void RemoveCompletion(long habitId, DateTime dateTime)
         {
-            string formattedDateTime = dateTime.ToString("yyyy-MM-dd HH:mm:ss.ffffff");    
+                string formattedDateTime = dateTime.ToString(
+                    "yyyy-MM-dd HH:mm:ss", 
+                    CultureInfo.InvariantCulture);  // Prevents OS-Specific variations to date format
             
-            using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
-
-            var insertHabitCmd = connection.CreateCommand();
-            insertHabitCmd.CommandText = "DELETE FROM Completions WHERE CompletionTime == @Date";
-            insertHabitCmd.Parameters.AddWithValue("@Date", formattedDateTime);
-            insertHabitCmd.ExecuteNonQuery();
+                using var connection = new SqliteConnection(_connectionString);
+                connection.Open();
+            
+                using var deleteCompletionCmd = connection.CreateCommand();
+                deleteCompletionCmd.CommandText = "DELETE FROM Completions WHERE HabitId = @HabitId AND CompletionTime = @Date";
+                deleteCompletionCmd.Parameters.AddWithValue("@HabitId", habitId);
+                deleteCompletionCmd.Parameters.AddWithValue("@Date", formattedDateTime);
+                int rowsAffected = deleteCompletionCmd.ExecuteNonQuery();
+            
+                if (rowsAffected == 0)
+                {
+                    throw new InvalidOperationException($"No completion found for Habit ID {habitId} at {formattedDateTime}");
+                }
         }
     }
 }
