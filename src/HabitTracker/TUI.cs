@@ -2,11 +2,11 @@ namespace HabitTracker
 {
     using System.Linq;
 
-    public class TUI
+    public class Tui
     {
         public HabitManager Manager;
 
-        public TUI()
+        public Tui()
         {
             Manager = new HabitManager();
         }

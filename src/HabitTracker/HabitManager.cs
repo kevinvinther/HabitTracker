@@ -7,7 +7,7 @@ namespace HabitTracker
     /// </summary>
     public class HabitManager
     {
-        private const string ConnectionString = "Data Source=habits.db";
+        private readonly string _connectionString;
 
 
         /// <summary>
@@ -15,7 +15,7 @@ namespace HabitTracker
         /// </summary>
         public void InitializeDatabase()
         {
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(_connectionString);
             connection.Open();
             
             var createHabitsTableCmd = connection.CreateCommand();
@@ -39,7 +39,7 @@ namespace HabitTracker
         /// </summary>
         /// <param name="habit">The Habit to add to the database.</param>
         public void AddHabit(Habit habit) {
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             var insertHabitCmd = connection.CreateCommand();
@@ -61,7 +61,7 @@ namespace HabitTracker
         /// <param name="habitId">The ID of the habit you want to add a completion to.</param>
         /// <param name="completionTime">The DateTime of the completion.</param>
         public void AddCompletion(long habitId, DateTime completionTime) {
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             var insertHabitCmd = connection.CreateCommand();
@@ -79,7 +79,7 @@ namespace HabitTracker
         /// </summary>
         /// <returns>A List<Habit> of all the habits in the database.</returns>
         public List<Habit> GetHabits() {
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             var getHabitsCmd = connection.CreateCommand();
@@ -103,7 +103,7 @@ namespace HabitTracker
         /// <param name="habitId">The ID of the habit whose completions are returned.</param>
         /// <returns>The completions of a given habit.</returns>
         public List<DateTime> GetCompletions(long habitId) {
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             var getCompletionsCmd= connection.CreateCommand();
@@ -121,7 +121,7 @@ namespace HabitTracker
 
         public void RemoveHabit(long habitId)
         {
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             using (var deleteHabitCmd = connection.CreateCommand())
@@ -143,7 +143,7 @@ namespace HabitTracker
         {
             string formattedDateTime = dateTime.ToString("yyyy-MM-dd HH:mm:ss.ffffff");    
             
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
             var insertHabitCmd = connection.CreateCommand();

@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            TUI tui = new TUI();
+            Tui tui = new Tui();
 
             tui.MainMenu();
         }
