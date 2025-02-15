@@ -65,7 +65,7 @@ namespace HabitTracker
             lastIdCmd.CommandText = "SELECT last_insert_rowid();";
             var result = lastIdCmd.ExecuteScalar();
 
-            habit.Id = result != null ? (long)Convert.ToInt64(result) : -1;
+            habit.Id = result != null ? Convert.ToInt64(result) : -1;
         }
 
 
@@ -91,7 +91,7 @@ namespace HabitTracker
         /// <summary>
         /// Gets a list of all the habits in the database.
         /// </summary>
-        /// <returns>A List<Habit> of all the habits in the database.</returns>
+        /// <returns>A List of all the habits in the database.</returns>
         public List<Habit> GetHabits() {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
