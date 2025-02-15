@@ -1,12 +1,20 @@
 namespace HabitTracker.Tests
 {
+    [Collection("Sequential")]
     public class HabitManagerTests
     {
         private HabitManager CreateHabitManager()
         {
-            var manager = new HabitManager();
+            var manager = new HabitManager("habits_test.db");
             manager.InitializeDatabase();
             return manager;
+        }
+
+        private long GetHabitId(List<Habit> habits, String name)
+        {
+            return habits.Where(h => h.Name == name)
+                .Select(h => h.Id)
+                .FirstOrDefault();
         }
 
         [Fact]
@@ -27,7 +35,11 @@ namespace HabitTracker.Tests
 
             var habits = manager.GetHabits();
             Assert.Single(habits);
-            Assert.Equal("Anki", habits.First().Name);
+            Assert.Equal("anki", habits.First().Name);
+
+
+            var habitId = GetHabitId(habits, "anki");
+            manager.RemoveHabit(habitId);
         }
 
         [Fact]
@@ -36,10 +48,14 @@ namespace HabitTracker.Tests
             HabitManager manager = CreateHabitManager();
 
             Habit anki = new Habit(1, "anki");
-            manager.AddHabit(anki);
 
+            manager.AddHabit(anki);
+                
             var exception = Assert.Throws<InvalidOperationException>(() => manager.AddHabit(anki));
-            Assert.Equal("A Habit with name 'Anki' already exists.", exception.Message);
+            Assert.Equal("A habit with name 'anki' already exists.", exception.Message);
+
+            var habitId = GetHabitId(manager.GetHabits(), "anki");
+            manager.RemoveHabit(habitId);
         }
 
         [Fact]
