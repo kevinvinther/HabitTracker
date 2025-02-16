@@ -116,7 +116,7 @@ namespace HabitTracker
         /// </summary>
         /// <param name="habitId">The ID of the habit whose completions are returned.</param>
         /// <returns>The completions of a given habit.</returns>
-        public List<DateTime> GetCompletions(long habitId) {
+        private List<DateTime> GetCompletions(long habitId) {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 

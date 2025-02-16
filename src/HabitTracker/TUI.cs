@@ -4,16 +4,11 @@ namespace HabitTracker
 
     public class Tui
     {
-        public HabitManager Manager;
-
-        public Tui()
-        {
-            Manager = new HabitManager();
-        }
+        private readonly HabitManager _manager = new();
 
         public void MainMenu()
         {
-            Manager.InitializeDatabase();
+            _manager.InitializeDatabase();
             while (true)
             {
                 Console.Clear();
@@ -22,10 +17,10 @@ namespace HabitTracker
                 Console.WriteLine("=    HABIT TRACKER    =");
                 Console.WriteLine("=======================");
                 Console.ForegroundColor = ConsoleColor.White;
-                if (Manager.GetHabits().Any())
+                if (_manager.GetHabits().Any())
                 {
                     Console.WriteLine("Current habits:");
-                    foreach (var habit in Manager.GetHabits())
+                    foreach (var habit in _manager.GetHabits())
                     {
                         string currentHabit = "= " + habit.Name.PadRight(20) + "=";
 
@@ -79,7 +74,7 @@ namespace HabitTracker
             if (!string.IsNullOrWhiteSpace(name))
             {
                 Habit newHabit = new Habit(0, name);
-                Manager.AddHabit(newHabit);
+                _manager.AddHabit(newHabit);
             }
             else
             {
@@ -96,10 +91,10 @@ namespace HabitTracker
             string? delete = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(delete))
             {
-                Habit? toBeDeleted = Manager.GetHabits().FirstOrDefault(h => h.Name.ToLower() == delete.ToLower());
+                Habit? toBeDeleted = _manager.GetHabits().FirstOrDefault(h => h.Name.ToLower() == delete.ToLower());
                 if (toBeDeleted != null)
                 {
-                    Manager.RemoveHabit(toBeDeleted.Id);
+                    _manager.RemoveHabit(toBeDeleted.Id);
                 }
                 else
                 {
@@ -115,14 +110,13 @@ namespace HabitTracker
         {
             Console.WriteLine("Please choose a habit: ");
             var i = 0;
-            foreach (var h in Manager.GetHabits())
+            foreach (var h in _manager.GetHabits())
             {
                 i += 1;
                 Console.WriteLine($"{i}: {h.Name}");
             }
 
-            int index;
-            bool success = Int32.TryParse(Console.ReadLine(), out index);
+            bool success = Int32.TryParse(Console.ReadLine(), out var index);
 
             if (!success)
             {
@@ -133,7 +127,7 @@ namespace HabitTracker
             var habitId = index - 1;
 
             Console.Clear();
-            var habit = Manager.GetHabits()[habitId];
+            var habit = _manager.GetHabits()[habitId];
             habit.PrintCompletionDates();
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("1. Add Completion");
@@ -145,7 +139,7 @@ namespace HabitTracker
             switch (index)
             {
                 case 1:
-                    Manager.AddCompletion(Manager.GetHabits()[habitId].Id, DateTime.Now);
+                    _manager.AddCompletion(_manager.GetHabits()[habitId].Id, DateTime.Now);
                     break;
                 case 2:
                     RemoveCompletion(habit);
@@ -173,8 +167,7 @@ namespace HabitTracker
 
             Console.Write("Number: ");
 
-            int index;
-            bool success = Int32.TryParse(Console.ReadLine(), out index);
+            bool success = Int32.TryParse(Console.ReadLine(), out var index);
 
             if (!success)
             {
@@ -182,7 +175,7 @@ namespace HabitTracker
                 return;
             }
 
-            Manager.RemoveCompletion(habit.Id, habit.Completions[index]);
+            _manager.RemoveCompletion(habit.Id, habit.Completions[index]);
 
             Console.WriteLine($"Completion {habit.Completions} deleted.");
             Console.WriteLine($"Press any key to continue");
