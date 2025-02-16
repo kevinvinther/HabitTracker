@@ -13,6 +13,7 @@ namespace HabitTracker
         /// <summary>
         /// Initializes a new instance of the <see cref="Habit"/> class.
         /// </summary>
+        /// <param name="id">The id of the habit</param>
         /// <param name="name">The name of the habit</param>
         /// <returns>A new instance of the <see cref="Habit"/> class.</returns>
         public Habit(long id, string name)
@@ -21,6 +22,7 @@ namespace HabitTracker
         /// <summary>
         /// Initializes a new instance of the <see cref="Habit"/> class.
         /// </summary>
+        /// <param name="id">The id of the habit</param>
         /// <param name="name">The name of the habit</param>
         /// <param name="completions">The completion dates of the habit</param>
         /// <returns>A new instance of the <see cref="Habit"/> class.</returns>
@@ -48,7 +50,7 @@ namespace HabitTracker
         /// Removes a completion date from the habit.
         /// </summary>
         /// <param name="date">The date-time of the completion.</param>
-        /// <returns>True if succesfully removed, false if not.</returns>
+        /// <returns>True if successfully removed, false if not.</returns>
         public bool RemoveCompletion(DateTime date)
         {
             return Completions.Remove(date);
