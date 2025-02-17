@@ -27,12 +27,18 @@ namespace HabitTracker
                         Console.WriteLine(currentHabit);
                     }
                 }
+                Console.WriteLine("Habits which have not been completed today:");
+                foreach (var habit in GetHabitsNotCompletedToday(_manager.GetHabits()))
+                {
+                    Console.WriteLine($"* {habit.Name}");
+                }
                 Console.WriteLine("Please choose your option:");
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("1. Add new habit");
                 Console.WriteLine("2. Remove a habit");
                 Console.WriteLine("3. Manage Habit");
                 Console.WriteLine("9. Quit Program");
+                Console.ForegroundColor = ConsoleColor.White;
 
                 string? answer = Console.ReadLine();
 
@@ -181,6 +187,26 @@ namespace HabitTracker
             Console.WriteLine($"Press any key to continue");
 
             Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Gets the habits which have not been completed today.
+        /// </summary>
+        /// <param name="habits">The habits to filter through.</param>
+        /// <returns>The habits whose newest completion was not today.</returns>
+        private List<Habit> GetHabitsNotCompletedToday(List<Habit> habits)
+        {
+            List<Habit> notCompletedToday = new List<Habit>();
+            
+            foreach (var habit in habits)
+            {
+                if (!habit.Completions.Any() || habit.Completions.Last().Date != DateTime.Today)
+                {
+                    notCompletedToday.Add(habit);
+                }
+            }
+
+            return notCompletedToday;
         }
     }
 }
