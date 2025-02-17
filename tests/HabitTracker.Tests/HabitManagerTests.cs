@@ -107,13 +107,13 @@ namespace HabitTracker.Tests
              Habit anki = new Habit(1, "anki"); 
              manager.AddHabit(anki); 
             
-             DateTime[] completionTimes = new[] 
-             { 
+             DateTime[] completionTimes =
+             [
                  new DateTime(2024, 1, 1, 10, 30, 31), 
                  new DateTime(2024, 1, 1, 10, 30, 32), 
                  new DateTime(2024, 1, 1, 10, 30, 33), 
-                 new DateTime(2024, 1, 1, 10, 30, 34) 
-             }; 
+                 new DateTime(2024, 1, 1, 10, 30, 34)
+             ]; 
             
              foreach (var time in completionTimes) 
              { 
