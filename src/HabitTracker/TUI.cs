@@ -165,10 +165,11 @@ namespace HabitTracker
             Console.WriteLine($"Habit: {habit.Name}. Please choose a completion you want to delete.");
             PrintCompletionsWithIndex(habit);
             var completionIndex = GetNumberInput();
-            if (completionIndex > habit.Completions.Count - 1 || completionIndex < 0)
+            if (completionIndex > habit.Completions.Count || completionIndex < 0)
             {
                 throw new ArgumentException("You must choose a valid index!");
             }
+            completionIndex -= 1;
             _manager.RemoveCompletion(habit.Id, habit.Completions[completionIndex]);
             Console.WriteLine($"Completion {habit.Completions[completionIndex]} deleted."); 
             Console.WriteLine("Press any key to continue.");
