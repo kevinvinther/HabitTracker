@@ -84,7 +84,10 @@ namespace HabitTracker
                 VALUES (@habitId, @CompletionTime);
                 ";
             insertHabitCmd.Parameters.AddWithValue("@habitId", habitId);
-            insertHabitCmd.Parameters.AddWithValue("@CompletionTime", completionTime);
+            insertHabitCmd.Parameters.AddWithValue("@CompletionTime", completionTime.ToString(
+                    "yyyy-MM-dd HH:mm:ss", 
+                    CultureInfo.InvariantCulture)
+            );
             insertHabitCmd.ExecuteNonQuery();
         }
 
