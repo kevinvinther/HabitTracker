@@ -1,6 +1,6 @@
 ﻿namespace HabitTracker
 {
-    class Program
+    static class Program
     {
         static void Main()
         {
