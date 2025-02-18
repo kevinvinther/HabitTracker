@@ -161,7 +161,7 @@ namespace HabitTracker
         /// Get user input in the form of a number. If it is not a number, throw error.
         /// </summary>
         /// <returns>The number supplied by the user.</returns>
-        /// <exception cref="ArgumentException">Throws ArgumentException error if the input is not a Int32 parseable number.</exception>
+        /// <exception cref="ArgumentException">Throws ArgumentException error if the input is not an Int32 parseable number.</exception>
         private int GetNumberInput()
         {
             Console.Write("Number: ");
