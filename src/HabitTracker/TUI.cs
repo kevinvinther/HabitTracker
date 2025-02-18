@@ -28,10 +28,7 @@ namespace HabitTracker
                     }
                 }
                 Console.WriteLine("Habits which have not been completed today:");
-                foreach (var habit in GetHabitsNotCompletedToday(_manager.GetHabits()))
-                {
-                    Console.WriteLine($"* {habit.Name}");
-                }
+                PrintHabitsWithIndex(GetHabitsNotCompletedToday(_manager.GetHabits()));
                 Console.WriteLine("Please choose your option:");
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("1. Add new habit");
@@ -40,32 +37,24 @@ namespace HabitTracker
                 Console.WriteLine("9. Quit Program");
                 Console.ForegroundColor = ConsoleColor.White;
 
-                string? answer = Console.ReadLine();
-
-                if (int.TryParse(answer, out int option))
+                int option = GetNumberInput();
+                switch (option)
                 {
-                    switch (option)
-                    {
-                        case 1:
-                            AddHabit();
-                            break;
-                        case 2:
-                            RemoveHabit();
-                            break;
-                        case 3:
-                            ManageHabit();
-                            break;
-                        case 9:
-                            return;
-                        default:
-                            Console.WriteLine("You must choose a valid option!");
-                            break;
+                    case 1:
+                        AddHabit();
+                        break;
+                    case 2:
+                        RemoveHabit();
+                        break;
+                    case 3:
+                        ManageHabit();
+                        break;
+                    case 9:
+                        return;
+                    default:
+                        Console.WriteLine("You must choose a valid option!");
+                        break;
 
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Input cannot be empty and must be a number.");
                 }
             }
         }
@@ -76,16 +65,9 @@ namespace HabitTracker
         private void AddHabit()
         {
             Console.WriteLine("Please enter the name of your new habit: ");
-            string? name = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                Habit newHabit = new Habit(0, name);
-                _manager.AddHabit(newHabit);
-            }
-            else
-            {
-                Console.WriteLine("Habit name cannot be empty or null.");
-            }
+            String name = GetStringInput();
+            Habit newHabit = new Habit(0, name);
+            _manager.AddHabit(newHabit);
         }
 
         /// <summary>
@@ -94,45 +76,30 @@ namespace HabitTracker
         private void RemoveHabit()
         {
             Console.WriteLine("Please enter the name of the habit you want to remove: ");
-            string? delete = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(delete))
+            var delete = GetStringInput();
+            Habit? toBeDeleted = _manager
+                .GetHabits()
+                .FirstOrDefault(h => h.Name.ToLower() == delete.ToLower());
+            if (toBeDeleted != null)
             {
-                Habit? toBeDeleted = _manager.GetHabits().FirstOrDefault(h => h.Name.ToLower() == delete.ToLower());
-                if (toBeDeleted != null)
-                {
-                    _manager.RemoveHabit(toBeDeleted.Id);
-                }
-                else
-                {
-                    Console.WriteLine($"Could not find habit with name '{delete}'!");
-                }
+                _manager.RemoveHabit(toBeDeleted.Id);
+            }
+            else
+            {
+                Console.WriteLine($"Could not find habit with name '{delete}'!");
             }
         }
 
         /// <summary>
-        /// Add or remove completion from habit.
+        /// Interface to add or remove completion from habit.
         /// </summary>
         private void ManageHabit()
         {
             Console.WriteLine("Please choose a habit: ");
-            var i = 0;
-            foreach (var h in _manager.GetHabits())
-            {
-                i += 1;
-                Console.WriteLine($"{i}: {h.Name}");
-            }
-
-            bool success = Int32.TryParse(Console.ReadLine(), out var index);
-
-            if (!success)
-            {
-                Console.WriteLine("You must choose a number.");
-                return;
-            }
-
-            var habitId = index - 1;
-
+            PrintHabitsWithIndex(_manager.GetHabits());
+            var habitId = GetNumberInput() - 1;
             Console.Clear();
+            
             var habit = _manager.GetHabits()[habitId];
             habit.PrintCompletionDates();
             Console.WriteLine("What do you want to do?");
@@ -140,7 +107,7 @@ namespace HabitTracker
             Console.WriteLine("2. Remove Completion Date");
             Console.WriteLine("9. Cancel");
 
-            _ = Int32.TryParse(Console.ReadLine(), out index);
+            _ = Int32.TryParse(Console.ReadLine(), out var index);
 
             switch (index)
             {
@@ -189,6 +156,22 @@ namespace HabitTracker
                 Console.WriteLine($"{i}: {completion}");
             }
         }
+        
+        
+        // TODO: Implement generics with these.
+        /// <summary>
+        /// Prints the habits of the habit list in an indexed list format.
+        /// </summary>
+        /// <param name="habits">The list containing the habits to be printed.</param>
+        private void PrintHabitsWithIndex(List<Habit> habits)
+        {
+            var i = 0;
+            foreach (var habit in habits)
+            {
+                i += 1;
+                Console.WriteLine($"{i}: {habit.Name}");
+            }
+        }
 
         /// <summary>
         /// Get user input in the form of a number. If it is not a number, throw error.
@@ -205,6 +188,24 @@ namespace HabitTracker
             }
 
             throw new ArgumentException("Input must be a valid number.");
+        }
+
+        /// <summary>
+        /// Gets user input in the form of a string. Checks whether it is an empty string, and returns the string if not.
+        /// </summary>
+        /// <returns>The string inputted by the user.</returns>
+        /// <exception cref="ArgumentException">If the string is empty.</exception>
+        private string GetStringInput()
+        {
+            string? delete = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(delete))
+            {
+                return delete;
+            }
+            else
+            {
+                throw new ArgumentException("You must type a habit name.");
+            }
         }
 
         /// <summary>
