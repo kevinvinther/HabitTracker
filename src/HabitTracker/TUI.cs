@@ -140,7 +140,7 @@ namespace HabitTracker
             Console.WriteLine("2. Remove Completion Date");
             Console.WriteLine("9. Cancel");
 
-            var _ = Int32.TryParse(Console.ReadLine(), out index);
+            _ = Int32.TryParse(Console.ReadLine(), out index);
 
             switch (index)
             {
@@ -156,37 +156,54 @@ namespace HabitTracker
         }
 
         /// <summary>
-        /// Gives a guide to remove a completion.
+        /// Removes a completion based on a list of completions outputted by the program.
         /// </summary>
-        /// <param name="habit">The habit which a completion is to be removed from.</param>
+        /// <param name="habit">The habit who has a completion to be deleted.</param>
+        /// <exception cref="ArgumentException">If the input is not a valid index in the <see cref="Habit"/>'s completions.</exception>
         private void RemoveCompletion(Habit habit)
         {
-            Console.WriteLine($"Habit: {habit.Name}. Please choose a completion you want to delete: ");
+            Console.WriteLine($"Habit: {habit.Name}. Please choose a completion you want to delete.");
+            PrintCompletionsWithIndex(habit);
+            var completionIndex = GetNumberInput();
+            if (completionIndex > habit.Completions.Count - 1 || completionIndex < 0)
+            {
+                throw new ArgumentException("You must choose a valid index!");
+            }
+            _manager.RemoveCompletion(habit.Id, habit.Completions[completionIndex]);
+            Console.WriteLine($"Completion {habit.Completions[completionIndex]} deleted."); 
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+        }
 
+        /// <summary>
+        /// Prints the completions of the habit in an indexed list format.
+        /// </summary>
+        /// <param name="habit">The habit whose completions will be printed.</param>
+        private void PrintCompletionsWithIndex(Habit habit)
+        {
             var i = 0;
             foreach (var completion in habit.Completions)
             {
                 i += 1;
                 Console.WriteLine($"{i}: {completion}");
             }
+        }
 
-
+        /// <summary>
+        /// Get user input in the form of a number. If it is not a number, throw error.
+        /// </summary>
+        /// <returns>The number supplied by the user.</returns>
+        /// <exception cref="ArgumentException">Throws ArgumentException error if the input is not a Int32 parseable number.</exception>
+        private int GetNumberInput()
+        {
             Console.Write("Number: ");
-
             bool success = Int32.TryParse(Console.ReadLine(), out var index);
-
-            if (!success)
+            if (success)
             {
-                Console.WriteLine("You must write a valid number.");
-                return;
+                return index;
             }
 
-            _manager.RemoveCompletion(habit.Id, habit.Completions[index]);
-
-            Console.WriteLine($"Completion {habit.Completions} deleted.");
-            Console.WriteLine($"Press any key to continue");
-
-            Console.ReadKey();
+            throw new ArgumentException("Input must be a valid number.");
         }
 
         /// <summary>
