@@ -37,6 +37,11 @@ namespace HabitTracker
             Completions = new List<DateTime>(completions);
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         /// <summary>
         /// Adds a completion date to the habit
         /// </summary>

@@ -28,7 +28,7 @@ namespace HabitTracker
                     }
                 }
                 Console.WriteLine("Habits which have not been completed today:");
-                PrintHabitsWithIndex(GetHabitsNotCompletedToday(_manager.GetHabits()));
+                PrintElementsWithIndex(GetHabitsNotCompletedToday(_manager.GetHabits()));
                 Console.WriteLine("Please choose your option:");
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("1. Add new habit");
@@ -96,7 +96,7 @@ namespace HabitTracker
         private void ManageHabit()
         {
             Console.WriteLine("Please choose a habit: ");
-            PrintHabitsWithIndex(_manager.GetHabits());
+            PrintElementsWithIndex(_manager.GetHabits());
             var habitId = GetNumberInput() - 1;
             Console.Clear();
             
@@ -130,7 +130,7 @@ namespace HabitTracker
         private void RemoveCompletion(Habit habit)
         {
             Console.WriteLine($"Habit: {habit.Name}. Please choose a completion you want to delete.");
-            PrintCompletionsWithIndex(habit);
+            PrintElementsWithIndex(habit.Completions);
             var completionIndex = GetNumberInput();
             if (completionIndex > habit.Completions.Count || completionIndex < 0)
             {
@@ -144,32 +144,16 @@ namespace HabitTracker
         }
 
         /// <summary>
-        /// Prints the completions of the habit in an indexed list format.
+        /// Prints elements of a list of elements with their index preceding.
         /// </summary>
-        /// <param name="habit">The habit whose completions will be printed.</param>
-        private void PrintCompletionsWithIndex(Habit habit)
+        /// <param name="elements">The list containing the elements to be printed.</param>
+        private void PrintElementsWithIndex<T>(List<T> elements)
         {
             var i = 0;
-            foreach (var completion in habit.Completions)
+            foreach (var element in elements)
             {
                 i += 1;
-                Console.WriteLine($"{i}: {completion}");
-            }
-        }
-        
-        
-        // TODO: Implement generics with these.
-        /// <summary>
-        /// Prints the habits of the habit list in an indexed list format.
-        /// </summary>
-        /// <param name="habits">The list containing the habits to be printed.</param>
-        private void PrintHabitsWithIndex(List<Habit> habits)
-        {
-            var i = 0;
-            foreach (var habit in habits)
-            {
-                i += 1;
-                Console.WriteLine($"{i}: {habit.Name}");
+                Console.WriteLine($"{i}: {element}");
             }
         }
 
