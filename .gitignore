@@ -399,3 +399,6 @@ FodyWeavers.xsd
 # Sqlite databases
 *.db
 
+# Coverage
+coverage/
+coveragereport/
