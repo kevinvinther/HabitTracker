@@ -9,54 +9,77 @@ namespace HabitTracker
         public void MainMenu()
         {
             _manager.InitializeDatabase();
+
             while (true)
             {
                 Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("=======================");
-                Console.WriteLine("=    HABIT TRACKER    =");
-                Console.WriteLine("=======================");
-                Console.ForegroundColor = ConsoleColor.White;
-                if (_manager.GetHabits().Any())
-                {
-                    Console.WriteLine("Current habits:");
-                    foreach (var habit in _manager.GetHabits())
-                    {
-                        string currentHabit = "= " + habit.Name.PadRight(20) + "=";
 
-                        Console.WriteLine(currentHabit);
-                    }
-                }
-                Console.WriteLine("Habits which have not been completed today:");
-                PrintElementsWithIndex(GetHabitsNotCompletedToday(_manager.GetHabits()));
-                Console.WriteLine("Please choose your option:");
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("1. Add new habit");
-                Console.WriteLine("2. Remove a habit");
-                Console.WriteLine("3. Manage Habit");
-                Console.WriteLine("9. Quit Program");
-                Console.ForegroundColor = ConsoleColor.White;
+                DisplayHeader();
+
+                var habits = _manager.GetHabits().ToList();
+
+                if (habits.Any())
+                    DisplayHabits(habits);
+
+                DisplayHabitsNotCompletedToday(habits);
+                DisplayMenuOptions();
 
                 int option = GetNumberInput();
-                switch (option)
-                {
-                    case 1:
-                        AddHabit();
-                        break;
-                    case 2:
-                        RemoveHabit();
-                        break;
-                    case 3:
-                        ManageHabit();
-                        break;
-                    case 9:
-                        return;
-                    default:
-                        Console.WriteLine("You must choose a valid option!");
-                        break;
-
-                }
+                HandleMenuOption(option);
             }
+        }
+
+
+        public void DisplayHeader() {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("=======================");
+            Console.WriteLine("=    HABIT TRACKER    =");
+            Console.WriteLine("=======================");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public void DisplayHabits(List<Habit> habits) {
+            Console.WriteLine("Current habits:");
+            foreach (var habit in habits)
+            {
+                Console.WriteLine($"= {habit.Name.PadRight(20)} =");
+            }
+        }
+
+        public void DisplayMenuOptions() {
+            Console.WriteLine("Please choose your option:");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("1. Add new habit");
+            Console.WriteLine("2. Remove a habit");
+            Console.WriteLine("3. Manage Habit");
+            Console.WriteLine("9. Quit Program");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public void DisplayHabitsNotCompletedToday(List<Habit> habits) {
+            Console.WriteLine("Habits which have not been completed today:");
+            PrintElementsWithIndex(GetHabitsNotCompletedToday(habits));
+        }
+
+        public bool HandleMenuOption(int option) {
+            switch (option)
+            {
+                case 1:
+                    AddHabit();
+                    break;
+                case 2:
+                    RemoveHabit();
+                    break;
+                case 3:
+                    ManageHabit();
+                    break;
+                case 9:
+                    return false;
+                default:
+                    Console.WriteLine("You must choose a valid option!");
+                    break;
+            }
+            return true;
         }
 
         /// <summary>
