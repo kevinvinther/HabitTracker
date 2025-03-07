@@ -25,7 +25,6 @@ namespace HabitTracker
                 DisplayMenuOptions();
 
                 int option = GetNumberInput();
-                HandleMenuOption(option);
                 if (!HandleMenuOption(option))
                     return;
             }
@@ -63,24 +62,21 @@ namespace HabitTracker
             PrintElementsWithIndex(GetHabitsNotCompletedToday(habits));
         }
 
-        public bool HandleMenuOption(int option) {
-            switch (option)
+        public bool HandleMenuOption(int option)
+        {
+            var menuActions = new Dictionary<int, Action>
             {
-                case 1:
-                    AddHabit();
-                    break;
-                case 2:
-                    RemoveHabit();
-                    break;
-                case 3:
-                    ManageHabit();
-                    break;
-                case 9:
-                    return false;
-                default:
-                    Console.WriteLine("You must choose a valid option!");
-                    break;
-            }
+                { 1, AddHabit },
+                { 2, RemoveHabit },
+                { 3, ManageHabit }
+            };
+
+            if (option == 9)
+                return false;
+
+            if (menuActions.TryGetValue(option, out var action))
+                action();
+
             return true;
         }
 
