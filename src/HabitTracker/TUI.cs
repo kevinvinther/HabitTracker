@@ -116,12 +116,14 @@ namespace HabitTracker
         /// </summary>
         private void ManageHabit()
         {
+            var habits = _manager.GetHabits();
+
             Console.WriteLine("Please choose a habit: ");
-            PrintElementsWithIndex(_manager.GetHabits());
+            PrintElementsWithIndex(habits);
             var habitId = GetNumberInput() - 1;
             Console.Clear();
-            
-            var habit = _manager.GetHabits()[habitId];
+
+            var habit = habits[habitId];
             habit.PrintCompletionDates();
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("1. Add Completion");
@@ -220,17 +222,8 @@ namespace HabitTracker
         /// <returns>The habits whose newest completion was not today.</returns>
         private List<Habit> GetHabitsNotCompletedToday(List<Habit> habits)
         {
-            List<Habit> notCompletedToday = new List<Habit>();
-            
-            foreach (var habit in habits)
-            {
-                if (!habit.Completions.Any() || habit.Completions.Last().Date != DateTime.Today)
-                {
-                    notCompletedToday.Add(habit);
-                }
-            }
-
-            return notCompletedToday;
+            return habits.Where(habit => !habit.Completions.Any() || habit.Completions.Last().Date == DateTime.Today)
+                .ToList();
         }
     }
 }
