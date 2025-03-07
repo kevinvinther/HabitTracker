@@ -26,6 +26,8 @@ namespace HabitTracker
 
                 int option = GetNumberInput();
                 HandleMenuOption(option);
+                if (!HandleMenuOption(option))
+                    return;
             }
         }
 
