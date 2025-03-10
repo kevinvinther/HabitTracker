@@ -31,7 +31,7 @@ namespace HabitTracker
         }
 
 
-        public void DisplayHeader() {
+        private void DisplayHeader() {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("=======================");
             Console.WriteLine("=    HABIT TRACKER    =");
@@ -39,7 +39,7 @@ namespace HabitTracker
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void DisplayHabits(List<Habit> habits) {
+        private void DisplayHabits(List<Habit> habits) {
             Console.WriteLine("Current habits:");
             foreach (var habit in habits)
             {
@@ -47,7 +47,7 @@ namespace HabitTracker
             }
         }
 
-        public void DisplayMenuOptions() {
+        private void DisplayMenuOptions() {
             Console.WriteLine("Please choose your option:");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("1. Add new habit");
@@ -57,12 +57,12 @@ namespace HabitTracker
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void DisplayHabitsNotCompletedToday(List<Habit> habits) {
+        private void DisplayHabitsNotCompletedToday(List<Habit> habits) {
             Console.WriteLine("Habits which have not been completed today:");
-            PrintElementsWithIndex(GetHabitsNotCompletedToday(habits));
+            PrintElementsWithIndex(GetHabitsNotCompletedOnDay(habits, DateTime.Today));
         }
 
-        public bool HandleMenuOption(int option)
+        private bool HandleMenuOption(int option)
         {
             var menuActions = new Dictionary<int, Action>
             {
