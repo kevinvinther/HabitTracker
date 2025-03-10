@@ -85,5 +85,36 @@ namespace HabitTracker.Tests
 
             Assert.Empty(habit.Completions);
         }
+
+        [Fact]
+        public void ToString_ShouldConvert_WhenProperlyInitialized() {
+            var habit = new Habit(0, "Exercise");
+
+            Assert.Equal($"{habit}", habit.Name);
+        }
+
+        [Fact]
+        public void PrintCompletionDates_ShouldPrint_AllCompletionDates() {
+            List<DateTime> completions = new List<DateTime> {
+                new DateTime(2024, 1, 1),
+                new DateTime(2024, 1, 2),
+                new DateTime(2024, 1, 3),
+                new DateTime(2024, 1, 4)
+            };
+
+            var habit = new Habit(0, "Exercise", completions.ToArray());
+
+            var expected = "Habit: Exercise\n* 01/01/2024 00.00.00\n* 02/01/2024 00.00.00\n* 03/01/2024 00.00.00\n* 04/01/2024 00.00.00\n";
+
+            Assert.Equal(habit.GetCompletionDates(), expected);
+        }
+
+        [Fact]
+        public void PrintCompletionDates_ShouldPrint_When_NoCompletions() {
+            var habit = new Habit(0, "Exercise");
+
+            var expected = "There are not yet any completions for habit Exercise! :(";
+            Assert.Equal(habit.GetCompletionDates(), expected);
+        }
     }
 }
