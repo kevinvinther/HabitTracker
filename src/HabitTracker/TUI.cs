@@ -6,6 +6,10 @@ namespace HabitTracker
     {
         private readonly HabitManager _manager = new();
 
+        /// <summary>
+        /// Handles the main loop as well as initializatio of the database
+        /// for the TUI.
+        /// </summary>
         public void MainMenu()
         {
             _manager.InitializeDatabase();
@@ -31,6 +35,9 @@ namespace HabitTracker
         }
 
 
+        /// <summary>
+        /// Displays the header logo.
+        /// </summary>
         private void DisplayHeader() {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("=======================");
@@ -39,6 +46,10 @@ namespace HabitTracker
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        /// <summary>
+        /// Displays the habits in a neatly formatted list.
+        /// </summary>
+        /// <param name="habits">A list of habits.</param>
         private void DisplayHabits(List<Habit> habits) {
             Console.WriteLine("Current habits:");
             foreach (var habit in habits)
@@ -47,6 +58,9 @@ namespace HabitTracker
             }
         }
 
+        /// <summary>
+        /// Display the menu options.
+        /// </summary>
         private void DisplayMenuOptions() {
             Console.WriteLine("Please choose your option:");
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -57,11 +71,20 @@ namespace HabitTracker
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        /// <summary>
+        /// Displays the habits not completed today.
+        /// </summary>
+        /// <param name="habits">A list of habits.</param>
         private void DisplayHabitsNotCompletedToday(List<Habit> habits) {
             Console.WriteLine("Habits which have not been completed today:");
             PrintElementsWithIndex(GetHabitsNotCompletedOnDay(habits, DateTime.Today));
         }
 
+        /// <summary>
+        /// Given an option, handles the menu options printed in DisplayMenuOptions.
+        /// </summary>
+        /// <param name="option">The option selected whose function should be called.</param>
+        /// <returns>true if the option selected is not "quit".</returns>
         private bool HandleMenuOption(int option)
         {
             var menuActions = new Dictionary<int, Action>
