@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+rm -rf coverage coveragereport
 dotnet test --collect:"XPlat Code Coverage" --results-directory coverage/
 
 reportgenerator \
