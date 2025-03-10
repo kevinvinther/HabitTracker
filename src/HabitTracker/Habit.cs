@@ -79,10 +79,12 @@ namespace HabitTracker
             }
             else
             {
+                string iso8601ish = "yyyy-MM-dd HH:mm:ss";
+
                 completionDates.Append($"Habit: {Name}\n");
                 foreach (var completion in Completions)
                 {
-                    completionDates.Append($"* {completion}\n");
+                    completionDates.Append($"* {completion.ToString(iso8601ish)}\n");
                 }
             }
             return completionDates.ToString();
