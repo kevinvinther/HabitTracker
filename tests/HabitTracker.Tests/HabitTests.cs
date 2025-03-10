@@ -104,7 +104,7 @@ namespace HabitTracker.Tests
 
             var habit = new Habit(0, "Exercise", completions.ToArray());
 
-            var expected = "Habit: Exercise\n* 2024-01-01 00.00.00\n* 2024-01-02 00.00.00\n* 2024-01-03 00.00.00\n* 2024-01-04 00.00.00\n";
+            var expected = "Habit: Exercise\n* 2024-01-01 00:00:00\n* 2024-01-02 00:00:00\n* 2024-01-03 00:00:00\n* 2024-01-04 00:00:00\n";
 
             Assert.Equal(habit.GetCompletionDates(), expected);
         }

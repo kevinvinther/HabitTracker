@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 
 namespace HabitTracker
@@ -84,7 +85,7 @@ namespace HabitTracker
                 completionDates.Append($"Habit: {Name}\n");
                 foreach (var completion in Completions)
                 {
-                    completionDates.Append($"* {completion.ToString(iso8601ish)}\n");
+                    completionDates.Append($"* {completion.ToString(iso8601ish, CultureInfo.InvariantCulture)}\n");
                 }
             }
             return completionDates.ToString();
