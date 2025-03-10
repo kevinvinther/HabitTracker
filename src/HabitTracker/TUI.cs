@@ -216,13 +216,14 @@ namespace HabitTracker
         }
 
         /// <summary>
-        /// Gets the habits which have not been completed today.
+        /// Gets the habits which have not been completed on a specific date.
         /// </summary>
         /// <param name="habits">The habits to filter through.</param>
+        /// <param name="dt">The date you want to filter off</param>
         /// <returns>The habits whose newest completion was not today.</returns>
-        private List<Habit> GetHabitsNotCompletedToday(List<Habit> habits)
+        private List<Habit> GetHabitsNotCompletedOnDay(List<Habit> habits, DateTime dt)
         {
-            return habits.Where(habit => !habit.Completions.Any() || habit.Completions.Last().Date == DateTime.Today)
+            return habits.Where(habit => !habit.Completions.Any() || habit.Completions.Last().Date == dt.Date)
                 .ToList();
         }
     }
