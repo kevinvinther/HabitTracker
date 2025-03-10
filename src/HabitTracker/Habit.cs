@@ -37,6 +37,9 @@ namespace HabitTracker
             Completions = new List<DateTime>(completions);
         }
 
+        /// <summary>
+        /// Allows for the conversion of the habit to a string.
+        /// </summary>
         public override string ToString()
         {
             return Name;
