@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace HabitTracker
 {
     /// <summary>
@@ -65,22 +67,25 @@ namespace HabitTracker
         }
 
         /// <summary>
-        /// Prints a list of all completion dates, if they exist.
+        /// Returns a list of all completion dates, if they exist. If they don't
+        /// returns a string stating this.
         /// </summary>
-        public void PrintCompletionDates()
+        public string GetCompletionDates()
         {
+            StringBuilder completionDates = new StringBuilder("", 50);
             if (Completions.Count == 0)
             {
-                Console.WriteLine($"There are not yet any completions for habit {Name}! :(");
+                return $"There are not yet any completions for habit {Name}! :(";
             }
             else
             {
-                Console.WriteLine($"Habit: {Name}");
+                completionDates.Append($"Habit: {Name}\n");
                 foreach (var completion in Completions)
                 {
-                    Console.WriteLine($"* {completion}");
+                    completionDates.Append($"* {completion}\n");
                 }
             }
+            return completionDates.ToString();
         }
     }
 }

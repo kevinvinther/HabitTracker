@@ -147,7 +147,7 @@ namespace HabitTracker
             Console.Clear();
 
             var habit = habits[habitId];
-            habit.PrintCompletionDates();
+            Console.WriteLine(habit.GetCompletionDates());
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("1. Add Completion");
             Console.WriteLine("2. Remove Completion Date");
