@@ -26,8 +26,7 @@ namespace HabitTracker
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
             
-            var createHabitsTableCmd = connection.CreateCommand();
-            createHabitsTableCmd.CommandText = @"
+            using var createHabitsTableCmd = new SqliteCommand(@"
                 CREATE TABLE IF NOT EXISTS Habits (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     Name TEXT NOT NULL
@@ -37,8 +36,7 @@ namespace HabitTracker
                     HabitId INTEGER NOT NULL,
                     CompletionTime TEXT NOT NULL,
                     FOREIGN KEY (HabitId) REFERENCES Habits (Id) ON DELETE CASCADE
-                );
-            ";
+                );", connection);
             createHabitsTableCmd.ExecuteNonQuery();
         }
 
@@ -56,13 +54,12 @@ namespace HabitTracker
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
-            var insertHabitCmd = connection.CreateCommand();
-            insertHabitCmd.CommandText = "INSERT INTO Habits (Name) VALUES (@name);";
+            using var insertHabitCmd = new SqliteCommand(
+                "INSERT INTO Habits (Name) VALUES (@name);", connection);
             insertHabitCmd.Parameters.AddWithValue("@name", habit.Name);
             insertHabitCmd.ExecuteNonQuery();
 
-            var lastIdCmd = connection.CreateCommand();
-            lastIdCmd.CommandText = "SELECT last_insert_rowid();";
+            using var lastIdCmd = new SqliteCommand("SELECT last_insert_rowid();", connection);
             var result = lastIdCmd.ExecuteScalar();
 
             habit.setId(result != null ? Convert.ToInt64(result) : -1);
@@ -78,11 +75,10 @@ namespace HabitTracker
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
-            var insertHabitCmd = connection.CreateCommand();
-            insertHabitCmd.CommandText = @"
+            using var insertHabitCmd = new SqliteCommand(@"
                 INSERT INTO Completions (HabitId, CompletionTime)
-                VALUES (@habitId, @CompletionTime);
-                ";
+                VALUES (@habitId, @CompletionTime);", connection);
+
             insertHabitCmd.Parameters.AddWithValue("@habitId", habitId);
             insertHabitCmd.Parameters.AddWithValue("@CompletionTime", completionTime.ToString(
                     "yyyy-MM-dd HH:mm:ss", 
@@ -99,8 +95,7 @@ namespace HabitTracker
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
-            var getHabitsCmd = connection.CreateCommand();
-            getHabitsCmd.CommandText = "SELECT * FROM Habits;";
+            using var getHabitsCmd = new SqliteCommand("SELECT * FROM Habits", connection);
 
             var habits = new List<Habit>();
 
@@ -123,8 +118,9 @@ namespace HabitTracker
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
-            var getCompletionsCmd= connection.CreateCommand();
-            getCompletionsCmd.CommandText = "SELECT * FROM Completions WHERE HabitId = @habitId;";
+            using var getCompletionsCmd = new SqliteCommand(
+                "SELECT * FROM Completions WHERE HabitId = @habitId;",
+                connection);
             getCompletionsCmd.Parameters.AddWithValue("@habitId", habitId);
 
             var completions = new List<DateTime>();
@@ -141,9 +137,8 @@ namespace HabitTracker
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
             
-            using (var checkHabitCmd = connection.CreateCommand())
+            using (var checkHabitCmd = new SqliteCommand("SELECT COUNT(*) FROM Habits WHERE Id = @HabitId", connection))
             {
-                checkHabitCmd.CommandText = "SELECT COUNT(*) FROM Habits WHERE Id = @HabitId";
                 checkHabitCmd.Parameters.AddWithValue("@HabitId", habitId);
                 var count = Convert.ToInt32(checkHabitCmd.ExecuteScalar());
             
@@ -153,9 +148,8 @@ namespace HabitTracker
                 }
             }
             
-            using (var deleteHabitCmd = connection.CreateCommand())
+            using var deleteHabitCmd = new SqliteCommand("DELETE FROM Habits WHERE Id = @HabitId", connection);
             {
-                deleteHabitCmd.CommandText = "DELETE FROM Habits WHERE Id = @HabitId";
                 deleteHabitCmd.Parameters.AddWithValue("@HabitId", habitId);
                 deleteHabitCmd.ExecuteNonQuery();
             }
@@ -163,23 +157,22 @@ namespace HabitTracker
 
         public void RemoveCompletion(long habitId, DateTime dateTime)
         {
-                string formattedDateTime = dateTime.ToString(
-                    "yyyy-MM-dd HH:mm:ss", 
-                    CultureInfo.InvariantCulture);  // Prevents OS-Specific variations to date format
-            
-                using var connection = new SqliteConnection(_connectionString);
-                connection.Open();
-            
-                using var deleteCompletionCmd = connection.CreateCommand();
-                deleteCompletionCmd.CommandText = "DELETE FROM Completions WHERE HabitId = @HabitId AND CompletionTime = @Date";
-                deleteCompletionCmd.Parameters.AddWithValue("@HabitId", habitId);
-                deleteCompletionCmd.Parameters.AddWithValue("@Date", formattedDateTime);
-                int rowsAffected = deleteCompletionCmd.ExecuteNonQuery();
-            
-                if (rowsAffected == 0)
-                {
-                    throw new InvalidOperationException($"No completion found for Habit ID {habitId} at {formattedDateTime}");
-                }
+            string formattedDateTime = dateTime.ToString(
+                "yyyy-MM-dd HH:mm:ss",
+                CultureInfo.InvariantCulture);  // Prevents OS-Specific variations to date format
+
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
+
+            using var deleteCompletionCmd = new SqliteCommand("DELETE FROM Completions WHERE HabitId = @HabitId AND CompletionTime = @Date", connection);
+            deleteCompletionCmd.Parameters.AddWithValue("@HabitId", habitId);
+            deleteCompletionCmd.Parameters.AddWithValue("@Date", formattedDateTime);
+            int rowsAffected = deleteCompletionCmd.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new InvalidOperationException($"No completion found for Habit ID {habitId} at {formattedDateTime}");
+            }
         }
     }
 }
