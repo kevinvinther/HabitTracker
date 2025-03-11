@@ -8,9 +8,13 @@ namespace HabitTracker
     /// </summary>
     public class Habit
     {
-        public long Id { get; set; }
-        public string Name { get; private set; }
-        public List<DateTime> Completions { get; set; }
+        private List<DateTime> _completions;
+        private string _name;
+        private long _id;
+
+        public long Id => _id;
+        public string Name => _name;
+        public List<DateTime> Completions => _completions;
 
 
         /// <summary>
@@ -35,9 +39,9 @@ namespace HabitTracker
             {
                 throw new ArgumentException("Name cannot be empty", nameof(name));
             }
-            Id = id;
-            Name = name;
-            Completions = new List<DateTime>(completions);
+            _id = id;
+            _name = name;
+            _completions = new List<DateTime>(completions);
         }
 
         /// <summary>
@@ -45,7 +49,7 @@ namespace HabitTracker
         /// </summary>
         public override string ToString()
         {
-            return Name;
+            return _name;
         }
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace HabitTracker
         /// <param name="date">Completed date</param>
         public void AddCompletion(DateTime date)
         {
-            Completions.Add(date);
+            _completions.Add(date);
         }
 
         /// <summary>
@@ -64,7 +68,7 @@ namespace HabitTracker
         /// <returns>True if successfully removed, false if not.</returns>
         public bool RemoveCompletion(DateTime date)
         {
-            return Completions.Remove(date);
+            return _completions.Remove(date);
         }
 
         /// <summary>
@@ -74,16 +78,16 @@ namespace HabitTracker
         public string GetCompletionDates()
         {
             StringBuilder completionDates = new StringBuilder("", 50);
-            if (Completions.Count == 0)
+            if (_completions.Count == 0)
             {
-                return $"There are not yet any completions for habit {Name}! :(";
+                return $"There are not yet any completions for habit {_name}! :(";
             }
             else
             {
                 string iso8601ish = "yyyy-MM-dd HH:mm:ss";
 
-                completionDates.Append($"Habit: {Name}\n");
-                foreach (var completion in Completions)
+                completionDates.Append($"Habit: {_name}\n");
+                foreach (var completion in _completions)
                 {
                     completionDates.Append($"* {completion.ToString(iso8601ish, CultureInfo.InvariantCulture)}\n");
                 }
