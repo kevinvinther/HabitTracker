@@ -4,8 +4,8 @@
     {
         static void Main()
         {
-            Tui tui = new Tui();
-
+            HabitManager manager = new HabitManager();
+            Tui tui = new Tui(manager);
             tui.MainMenu();
         }
     }

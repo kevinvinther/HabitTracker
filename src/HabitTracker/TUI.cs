@@ -4,7 +4,16 @@ namespace HabitTracker
 
     public class Tui
     {
-        private readonly HabitManager _manager = new();
+        private readonly HabitManager _manager;
+
+        /// <summary>
+        /// Sets up the variables to their given value.
+        /// </summary>
+        /// <param name="manager">The HabitManager instance to be used</param>
+        public Tui(HabitManager manager)
+        {
+           _manager = manager;
+        }
 
         /// <summary>
         /// Handles the main loop as well as initializatio of the database
