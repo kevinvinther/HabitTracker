@@ -85,21 +85,18 @@ namespace HabitTracker
         /// </summary>
         public string GetCompletionDates()
         {
-            StringBuilder completionDates = new StringBuilder("", 50);
-            if (_completions.Count == 0)
-            {
+            if (!_completions.Any())
                 return $"There are not yet any completions for habit {_name}! :(";
-            }
-            else
-            {
-                string iso8601ish = "yyyy-MM-dd HH:mm:ss";
 
-                completionDates.Append($"Habit: {_name}\n");
-                foreach (var completion in _completions)
-                {
-                    completionDates.Append($"* {completion.ToString(iso8601ish, CultureInfo.InvariantCulture)}\n");
-                }
+            StringBuilder completionDates = new StringBuilder("", 50);
+
+            string iso8601ish = "yyyy-MM-dd HH:mm:ss";
+            completionDates.Append($"Habit: {_name}\n");
+            foreach (var completion in _completions)
+            {
+                completionDates.AppendLine($"* {completion.ToString(iso8601ish, CultureInfo.InvariantCulture)}");
             }
+
             return completionDates.ToString();
         }
 
