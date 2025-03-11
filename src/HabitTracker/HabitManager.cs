@@ -65,7 +65,7 @@ namespace HabitTracker
             lastIdCmd.CommandText = "SELECT last_insert_rowid();";
             var result = lastIdCmd.ExecuteScalar();
 
-            habit.Id = result != null ? Convert.ToInt64(result) : -1;
+            habit.setId(result != null ? Convert.ToInt64(result) : -1);
         }
 
 
@@ -107,7 +107,7 @@ namespace HabitTracker
             using var reader = getHabitsCmd.ExecuteReader();
             while (reader.Read()) {
                 var habit = new Habit(id: reader.GetInt32(0), name: reader.GetString(1));
-                habit.Completions = GetCompletions(habit.Id);
+                habit.SetCompletions(GetCompletions(habit.Id));
                 habits.Add(habit);
             }
 
