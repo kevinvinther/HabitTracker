@@ -7,7 +7,8 @@ namespace HabitTracker.Tests
     {
         private HabitManager CreateHabitManager()
         {
-            var manager = new HabitManager("habits_test.db");
+            var repository = new HabitRepository("habits_test.db");
+            var manager = new HabitManager(repository);
             manager.InitializeDatabase();
             return manager;
         }
