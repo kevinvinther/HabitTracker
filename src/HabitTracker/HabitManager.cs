@@ -5,9 +5,9 @@ namespace HabitTracker
     /// </summary>
     public class HabitManager
     {
-        private readonly HabitRepository _repository;
+        private readonly IHabitRepository _repository;
 
-        public HabitManager(HabitRepository repository) {
+        public HabitManager(IHabitRepository repository) {
             _repository = repository;
         }
 

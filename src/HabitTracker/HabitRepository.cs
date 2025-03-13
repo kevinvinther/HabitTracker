@@ -2,10 +2,12 @@ using System.Globalization;
 using HabitTracker;
 using Microsoft.Data.Sqlite;
 
-public class HabitRepository {
+public class HabitRepository : IHabitRepository
+{
     private readonly string _connectionString;
 
-    public HabitRepository(string path = "habits.db") {
+    public HabitRepository(string path = "habits.db")
+    {
         _connectionString = $"Data Source={path}";
     }
 
