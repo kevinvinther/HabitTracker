@@ -75,7 +75,8 @@ namespace HabitTracker
         /// Setter method to set the completions to specified parameter.
         /// </summary>
         /// <param name="completions">The completion value to set completion to</param>
-        public void SetCompletions(List<DateTime> completions) {
+        public void SetCompletions(List<DateTime> completions)
+        {
             _completions = completions;
         }
 
@@ -100,7 +101,8 @@ namespace HabitTracker
             return completionDates.ToString();
         }
 
-        public void setId(long id) {
+        public void setId(long id)
+        {
             _id = id;
         }
     }

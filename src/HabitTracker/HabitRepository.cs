@@ -37,7 +37,8 @@ public class HabitRepository : IHabitRepository
     /// Gets a list of all the habits in the database.
     /// </summary>
     /// <returns>A List of all the habits in the database.</returns>
-    public List<Habit> GetHabits() {
+    public List<Habit> GetHabits()
+    {
         var habits = new List<Habit>();
 
         using var connection = new SqliteConnection(_connectionString);
@@ -46,7 +47,8 @@ public class HabitRepository : IHabitRepository
         using var getHabitsCmd = new SqliteCommand("SELECT * FROM Habits", connection);
         using var reader = getHabitsCmd.ExecuteReader();
 
-        while (reader.Read()) {
+        while (reader.Read())
+        {
             var habit = new Habit(id: reader.GetInt32(0), name: reader.GetString(1));
             habit.SetCompletions(GetCompletions(habit.Id));
             habits.Add(habit);

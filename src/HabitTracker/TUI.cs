@@ -12,7 +12,7 @@ namespace HabitTracker
         /// <param name="manager">The HabitManager instance to be used</param>
         public Tui(HabitManager manager)
         {
-           _manager = manager;
+            _manager = manager;
         }
 
         /// <summary>
@@ -47,7 +47,8 @@ namespace HabitTracker
         /// <summary>
         /// Displays the header logo.
         /// </summary>
-        private void DisplayHeader() {
+        private void DisplayHeader()
+        {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("=======================");
             Console.WriteLine("=    HABIT TRACKER    =");
@@ -59,7 +60,8 @@ namespace HabitTracker
         /// Displays the habits in a neatly formatted list.
         /// </summary>
         /// <param name="habits">A list of habits.</param>
-        private void DisplayHabits(List<Habit> habits) {
+        private void DisplayHabits(List<Habit> habits)
+        {
             Console.WriteLine("Current habits:");
             foreach (var habit in habits)
             {
@@ -70,7 +72,8 @@ namespace HabitTracker
         /// <summary>
         /// Display the menu options.
         /// </summary>
-        private void DisplayMenuOptions() {
+        private void DisplayMenuOptions()
+        {
             Console.WriteLine("Please choose your option:");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("1. Add new habit");
@@ -84,7 +87,8 @@ namespace HabitTracker
         /// Displays the habits not completed today.
         /// </summary>
         /// <param name="habits">A list of habits.</param>
-        private void DisplayHabitsNotCompletedToday(List<Habit> habits) {
+        private void DisplayHabitsNotCompletedToday(List<Habit> habits)
+        {
             Console.WriteLine("Habits which have not been completed today:");
             PrintElementsWithIndex(GetHabitsNotCompletedOnDay(habits, DateTime.Today));
         }
@@ -193,7 +197,7 @@ namespace HabitTracker
             }
             completionIndex -= 1;
             _manager.RemoveCompletion(habit.Id, habit.Completions[completionIndex]);
-            Console.WriteLine($"Completion {habit.Completions[completionIndex]} deleted."); 
+            Console.WriteLine($"Completion {habit.Completions[completionIndex]} deleted.");
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();
         }

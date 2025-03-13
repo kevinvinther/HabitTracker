@@ -7,7 +7,8 @@ namespace HabitTracker
     {
         private readonly IHabitRepository _repository;
 
-        public HabitManager(IHabitRepository repository) {
+        public HabitManager(IHabitRepository repository)
+        {
             _repository = repository;
         }
 
