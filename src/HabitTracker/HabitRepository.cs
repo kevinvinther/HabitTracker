@@ -1,4 +1,3 @@
-using System.Globalization;
 using HabitTracker;
 using Microsoft.Data.Sqlite;
 
