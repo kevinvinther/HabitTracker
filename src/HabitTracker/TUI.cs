@@ -157,9 +157,18 @@ namespace HabitTracker
             Console.WriteLine("Please choose a habit: ");
             PrintElementsWithIndex(habits);
             var habitId = GetNumberInput() - 1;
+
+            var habit = new Habit(0,"Temp");
+
+            try {
+                habit = habits[habitId];
+            } catch {
+                Console.WriteLine("You must choose a valid ID!");
+                Console.ReadKey();
+                return;
+            }
             Console.Clear();
 
-            var habit = habits[habitId];
             Console.WriteLine(habit.GetCompletionDates());
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("1. Add Completion");
