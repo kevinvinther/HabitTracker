@@ -141,9 +141,7 @@ public class HabitRepository : IHabitRepository
     /// <param name="dateTime">The DateTime of the completion you want to remove</param>
     public void RemoveCompletion(long habitId, DateTime dateTime)
     {
-        string formattedDateTime = dateTime.ToString(
-            "yyyy-MM-dd HH:mm:ss",
-            CultureInfo.InvariantCulture);  // Prevents OS-Specific variations to date format
+        var formattedDateTime = DateTimeHelper.Format(dateTime);
 
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
@@ -175,10 +173,8 @@ public class HabitRepository : IHabitRepository
                 VALUES (@habitId, @CompletionTime);", connection);
 
         insertHabitCmd.Parameters.AddWithValue("@habitId", habitId);
-        insertHabitCmd.Parameters.AddWithValue("@CompletionTime", completionTime.ToString(
-                "yyyy-MM-dd HH:mm:ss",
-                CultureInfo.InvariantCulture)
-        );
+        insertHabitCmd.Parameters.AddWithValue("@CompletionTime",
+                                               DateTimeHelper.Format(completionTime));
         insertHabitCmd.ExecuteNonQuery();
     }
 }

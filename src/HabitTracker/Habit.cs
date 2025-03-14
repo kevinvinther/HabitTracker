@@ -91,11 +91,10 @@ namespace HabitTracker
 
             StringBuilder completionDates = new StringBuilder("", 50);
 
-            string iso8601ish = "yyyy-MM-dd HH:mm:ss";
             completionDates.Append($"Habit: {_name}\n");
             foreach (var completion in _completions)
             {
-                completionDates.AppendLine($"* {completion.ToString(iso8601ish, CultureInfo.InvariantCulture)}");
+                completionDates.AppendLine($"* {DateTimeHelper.Format(completion)}");
             }
 
             return completionDates.ToString();
