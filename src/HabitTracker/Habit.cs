@@ -127,11 +127,13 @@ namespace HabitTracker
 
             for (DateTime date = min; date <= DateTime.Today; date = date.AddDays(1))
             {
-                if(completionDates.Contains(date.Date))
+                if (completionDates.Contains(date.Date))
                 {
                     currentStreak += 1;
                     streaks.Add(currentStreak);
-                } else {
+                }
+                else
+                {
                     currentStreak = 0;
                     streaks.Add(currentStreak);
                 }

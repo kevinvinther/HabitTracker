@@ -6,4 +6,7 @@ public class DateTimeHelper
 
     public static string Format(DateTime dt) =>
         dt.ToString(DateFormat, CultureInfo.InvariantCulture);
+
+    public static DateTime Parse(String dt) =>
+        DateTime.ParseExact(dt, DateFormat, CultureInfo.InvariantCulture);
 }
