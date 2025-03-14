@@ -39,6 +39,16 @@ public class HabitRepository : IHabitRepository
         return connection;
     }
 
+    private bool HabitExists(SqliteConnection connection, long habitId)
+    {
+        using var checkHabitCmd = new SqliteCommand("SELECT COUNT(*) FROM Habits WHERE Id = @HabitId", connection);
+        checkHabitCmd.Parameters.AddWithValue("@HabitId", habitId);
+
+        var count = Convert.ToInt32(checkHabitCmd.ExecuteScalar());
+
+        return count > 0;
+    }
+
     /// <summary>
     /// Gets a list of all the habits in the database.
     /// </summary>
@@ -118,22 +128,14 @@ public class HabitRepository : IHabitRepository
     {
         using var connection = GetOpenConnection();
 
-        using (var checkHabitCmd = new SqliteCommand("SELECT COUNT(*) FROM Habits WHERE Id = @HabitId", connection))
+        if (!HabitExists(connection, habitId))
         {
-            checkHabitCmd.Parameters.AddWithValue("@HabitId", habitId);
-            var count = Convert.ToInt32(checkHabitCmd.ExecuteScalar());
-
-            if (count == 0)
-            {
-                throw new InvalidOperationException($"Habit with ID {habitId} does not exist.");
-            }
+            throw new InvalidOperationException($"Habit with ID {habitId} does not exist.");
         }
 
         using var deleteHabitCmd = new SqliteCommand("DELETE FROM Habits WHERE Id = @HabitId", connection);
-        {
-            deleteHabitCmd.Parameters.AddWithValue("@HabitId", habitId);
-            deleteHabitCmd.ExecuteNonQuery();
-        }
+        deleteHabitCmd.Parameters.AddWithValue("@HabitId", habitId);
+        deleteHabitCmd.ExecuteNonQuery();
     }
 
     /// <summary>
