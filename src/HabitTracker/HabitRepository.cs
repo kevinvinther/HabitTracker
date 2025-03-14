@@ -16,8 +16,7 @@ public class HabitRepository : IHabitRepository
     /// </summary>
     public void InitializeDatabase()
     {
-        using var connection = new SqliteConnection(_connectionString);
-        connection.Open();
+        using var connection = GetOpenConnection();
 
         using var createHabitsTableCmd = new SqliteCommand(@"
                 CREATE TABLE IF NOT EXISTS Habits (
@@ -33,6 +32,13 @@ public class HabitRepository : IHabitRepository
         createHabitsTableCmd.ExecuteNonQuery();
     }
 
+    private SqliteConnection GetOpenConnection()
+    {
+        var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        return connection;
+    }
+
     /// <summary>
     /// Gets a list of all the habits in the database.
     /// </summary>
@@ -41,8 +47,7 @@ public class HabitRepository : IHabitRepository
     {
         var habits = new List<Habit>();
 
-        using var connection = new SqliteConnection(_connectionString);
-        connection.Open();
+        using var connection = GetOpenConnection();
 
         using var getHabitsCmd = new SqliteCommand("SELECT * FROM Habits", connection);
         using var reader = getHabitsCmd.ExecuteReader();
@@ -63,8 +68,7 @@ public class HabitRepository : IHabitRepository
     /// <returns>The completions of a given habit.</returns>
     private List<DateTime> GetCompletions(long habitId)
     {
-        using var connection = new SqliteConnection(_connectionString);
-        connection.Open();
+        using var connection = GetOpenConnection();
 
         using var getCompletionsCmd = new SqliteCommand(
             "SELECT * FROM Completions WHERE HabitId = @habitId;",
@@ -92,8 +96,7 @@ public class HabitRepository : IHabitRepository
             throw new InvalidOperationException($"A habit with name '{habit.Name}' already exists.");
         }
 
-        using var connection = new SqliteConnection(_connectionString);
-        connection.Open();
+        using var connection = GetOpenConnection();
 
         using var insertHabitCmd = new SqliteCommand(
             "INSERT INTO Habits (Name) VALUES (@name);", connection);
@@ -113,8 +116,7 @@ public class HabitRepository : IHabitRepository
     /// <param name="habitId">The ID of the habit to be removed.</param>
     public void RemoveHabit(long habitId)
     {
-        using var connection = new SqliteConnection(_connectionString);
-        connection.Open();
+        using var connection = GetOpenConnection();
 
         using (var checkHabitCmd = new SqliteCommand("SELECT COUNT(*) FROM Habits WHERE Id = @HabitId", connection))
         {
@@ -143,8 +145,7 @@ public class HabitRepository : IHabitRepository
     {
         var formattedDateTime = DateTimeHelper.Format(dateTime);
 
-        using var connection = new SqliteConnection(_connectionString);
-        connection.Open();
+        using var connection = GetOpenConnection();
 
         using var deleteCompletionCmd = new SqliteCommand("DELETE FROM Completions WHERE HabitId = @HabitId AND CompletionTime = @Date", connection);
         deleteCompletionCmd.Parameters.AddWithValue("@HabitId", habitId);
@@ -165,8 +166,7 @@ public class HabitRepository : IHabitRepository
     /// <param name="completionTime">The DateTime of the completion.</param>
     public void AddCompletion(long habitId, DateTime completionTime)
     {
-        using var connection = new SqliteConnection(_connectionString);
-        connection.Open();
+        using var connection = GetOpenConnection();
 
         using var insertHabitCmd = new SqliteCommand(@"
                 INSERT INTO Completions (HabitId, CompletionTime)
