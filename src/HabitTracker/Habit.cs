@@ -100,6 +100,56 @@ namespace HabitTracker
             return completionDates.ToString();
         }
 
+        /// <summary>
+        /// Returns an array counting the streak, where the index $i$ is the
+        /// streakat day $i$ after the first completion. Thus, if the habit had
+        /// three completions, followed by a weeks break,
+        /// GetSreakArray()[0..2] = [1,2,3], and
+        /// GetStreakArray()[4..11] = [0,0...].
+        /// If the user then resumes their streak, one day after their week break,
+        /// it will continue counting from 1. E.g. GetStreakDay[12] = 1, etc.
+        /// </summary>
+        /// <param name="until">The date you want until</param>
+        /// <returns>An array containing the streak at $i$ days after first
+        /// completion day</returns>
+        private int[] GetStreakArray()
+        {
+            if (!_completions.Any())
+            {
+                return [0];
+            }
+            List<int> streaks = new List<int>();
+            int currentStreak = 0;
+
+            var min = _completions.Min().Date;
+
+            var completionDates = _completions.Select(d => d.Date).ToList();
+
+            for (DateTime date = min; date <= DateTime.Today; date = date.AddDays(1))
+            {
+                if(completionDates.Contains(date.Date))
+                {
+                    currentStreak += 1;
+                    streaks.Add(currentStreak);
+                } else {
+                    currentStreak = 0;
+                    streaks.Add(currentStreak);
+                }
+            }
+
+            return streaks.ToArray();
+        }
+
+        public int GetCurrentStreak()
+        {
+            return GetStreakArray().Last();
+        }
+
+        public int GetLongestStreak()
+        {
+            return GetStreakArray().Max();
+        }
+
         public void setId(long id)
         {
             _id = id;

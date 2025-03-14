@@ -119,5 +119,85 @@ namespace HabitTracker.Tests
             var expected = "There are not yet any completions for habit Exercise! :(";
             Assert.Equal(habit.GetCompletionDates(), expected);
         }
+
+        // TODO: This assumes the current day is not 2024-01-01. While that day
+        // has passed in the real world, there might be some way this can be
+        // done better.
+        [Fact]
+        public void GetCurrentStreak_ShouldReturn_WhenOne()
+        {
+            var completions = new List<DateTime> {
+                new DateTime(2024, 1, 1),
+            };
+
+            var habit = new Habit(0, "Exercise", completions.ToArray());
+
+            Assert.Equal(0, habit.GetCurrentStreak());
+        }
+
+        [Fact]
+        public void GetCurrentStreak_ShouldReturn_WhenMany()
+        {
+            var today = DateTime.Today.Date;
+
+            var completions = new List<DateTime> {
+                today,
+                today.AddDays(-1),
+                today.AddDays(-2),
+                today.AddDays(-3),
+                today.AddDays(-4),
+            };
+
+            var habit = new Habit(0, "Exercise", completions.ToArray());
+
+            Assert.Equal(5, habit.GetCurrentStreak());
+        }
+
+        [Fact]
+        public void GetCurrentStreak_ShouldReturnZero_WhenNoCompletions()
+        {
+            var habit = new Habit(0, "Exercise");
+
+            Assert.Equal(0, habit.GetCurrentStreak());
+        }
+
+        [Fact]
+        public void GetLongestStreak_ShouldReturn_WhenOne()
+        {
+            var completions = new List<DateTime> {
+                new DateTime(2024, 1, 1),
+            };
+
+            var habit = new Habit(0, "Exercise", completions.ToArray());
+
+            Assert.Equal(1, habit.GetLongestStreak());
+        }
+
+        [Fact]
+        public void GetLongestStreak_ShouldReturn_WhenMany()
+        {
+            var today = DateTime.Today.Date;
+
+            var completions = new List<DateTime> {
+                today.AddDays(-5),
+                today.AddDays(-6),
+                today.AddDays(-7),
+                today.AddDays(-8),
+                today.AddDays(-9),
+            };
+
+            var habit = new Habit(0, "Exercise", completions.ToArray());
+
+            Assert.Equal(5, habit.GetLongestStreak());
+        }
+
+        [Fact]
+        public void GetLongestStreak_ShouldReturnZero_WhenNoCompletions()
+        {
+            var habit = new Habit(0, "Exercise");
+
+            Assert.Equal(0, habit.GetLongestStreak());
+        }
+
     }
 }

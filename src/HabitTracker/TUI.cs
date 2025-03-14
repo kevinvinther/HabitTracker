@@ -79,6 +79,8 @@ namespace HabitTracker
             Console.WriteLine("1. Add new habit");
             Console.WriteLine("2. Remove a habit");
             Console.WriteLine("3. Manage Habit");
+            Console.WriteLine("4. Get Max Streaks");
+            Console.WriteLine("5. Get Current Streaks");
             Console.WriteLine("9. Quit Program");
             Console.ForegroundColor = ConsoleColor.White;
         }
@@ -104,7 +106,9 @@ namespace HabitTracker
             {
                 { 1, AddHabit },
                 { 2, RemoveHabit },
-                { 3, ManageHabit }
+                { 3, ManageHabit },
+                { 4, GetMaxStreaks },
+                { 5, GetCurrentStreaks}
             };
 
             if (option == 9)
@@ -270,6 +274,34 @@ namespace HabitTracker
         {
             return habits.Where(habit => !habit.Completions.Any() || habit.Completions.Last().Date == dt.Date)
                 .ToList();
+        }
+
+        private void GetMaxStreaks()
+        {
+            Console.WriteLine("=== Max Streaks ===");
+
+            foreach (var h in _manager.GetHabits())
+            {
+                if (h.Completions.Any())
+                    Console.WriteLine($"{h}: {h.GetLongestStreak()}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        private void GetCurrentStreaks()
+        {
+            Console.WriteLine("=== Current Streaks ===");
+
+            foreach (var h in _manager.GetHabits())
+            {
+                if (h.Completions.Any())
+                    Console.WriteLine($"{h}: {h.GetCurrentStreak()}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
     }
 }
