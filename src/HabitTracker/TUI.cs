@@ -1,6 +1,7 @@
 namespace HabitTracker
 {
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     public class Tui
     {
@@ -162,11 +163,14 @@ namespace HabitTracker
             PrintElementsWithIndex(habits);
             var habitId = GetNumberInput() - 1;
 
-            var habit = new Habit(0,"Temp");
+            var habit = new Habit(0, "Temp");
 
-            try {
+            try
+            {
                 habit = habits[habitId];
-            } catch {
+            }
+            catch
+            {
                 Console.WriteLine("You must choose a valid ID!");
                 Console.ReadKey();
                 return;
@@ -184,13 +188,57 @@ namespace HabitTracker
             switch (index)
             {
                 case 1:
-                    _manager.AddCompletion(_manager.GetHabits()[habitId].Id, DateTime.Now);
+                    AddCompletion(habit);
                     break;
                 case 2:
                     RemoveCompletion(habit);
                     break;
                 default:
                     return;
+            }
+        }
+
+        private void AddCompletion(Habit habit)
+        {
+            Console.Clear();
+            Console.WriteLine("1. Add Completion Now");
+            Console.WriteLine("2. Add Old Completion");
+
+            _ = Int32.TryParse(Console.ReadLine(), out var index);
+            switch (index)
+            {
+                case 1:
+                    _manager.AddCompletion(habit.Id, DateTime.Now);
+                    break;
+                case 2:
+                    AddOldCompletion(habit);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void AddOldCompletion(Habit habit)
+        {
+            Console.WriteLine(
+            @"Please write the date in the following format: yyyy-MM-dd HH:mm:ss.
+Example: 2025-03-14 16:39:00. You may omit the time.
+Input Date:");
+
+            var inputDate = Console.ReadLine();
+            Regex dt = new Regex(@"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$");
+            Regex d = new Regex(@"^\d{4}-\d{2}-\d{2}$");
+
+            var dtMatch = dt.Matches(inputDate ?? "");
+            var dMatch = d.Matches(inputDate ?? "");
+
+            if (dMatch.Any())
+            {
+                _manager.AddCompletion(habit.Id, DateTimeHelper.Parse(dMatch[0].Value + " 00:00:00"));
+            }
+            else if (dtMatch.Any())
+            {
+                _manager.AddCompletion(habit.Id, DateTimeHelper.Parse(dtMatch[0].Value));
             }
         }
 
