@@ -3,12 +3,10 @@ namespace HabitTracker;
 public class Import : IImportService
 {
     HabitManager _manager;
-    HabitRepository _repository;
 
-    public Import(HabitRepository repository)
+    public Import(HabitManager manager)
     {
-        _repository = repository;
-        _manager = new HabitManager(repository);
+        _manager = manager;
     }
 
     public void AddHabitsWithCompletions(IEnumerable<Habit> habits)
