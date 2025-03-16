@@ -61,8 +61,9 @@ public class HabiticaImporter : IImporter
 
     public IEnumerable<Habit> ImportHabits(string filePath)
     {
-        var reader = new StreamReader(filePath);
-        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        var csv = GetCsvContent(filePath)
+            ?? throw new ArgumentException("The file is empty, or another error has occured: CSV Content was null");
+
 
         var records = csv.GetRecords<ParsedHabit>();
 
@@ -72,5 +73,11 @@ public class HabiticaImporter : IImporter
         }
 
         return DictionaryToHabits(habits);
+    }
+
+    private CsvReader? GetCsvContent(string filePath)
+    {
+        var reader = new StreamReader(filePath);
+        return new CsvReader(reader, CultureInfo.InvariantCulture);
     }
 }
