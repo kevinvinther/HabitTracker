@@ -29,8 +29,7 @@ public class HabiticaImporter : IImporter
 
     public IEnumerable<Habit> ImportHabits(string filePath)
     {
-        var csv = CsvHelper.GetCsvReader(filePath)
-            ?? throw new ArgumentException("The file is empty, or another error has occured: CSV Content was null");
+        var csv = CsvHelper.GetCsvReader(filePath);
 
 
         var records = csv.GetRecords<ParsedHabit>();
