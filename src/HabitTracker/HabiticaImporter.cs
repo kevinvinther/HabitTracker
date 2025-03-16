@@ -15,8 +15,8 @@ public class HabiticaImporter : IImporter
 
     private class ParsedHabit
     {
-        public string Task_Name { get; set; }
-        public string Date { get; set; }
+        public required string Task_Name { get; set; }
+        public required string Date { get; set; }
     }
 
     public HabiticaImporter(IImportService importService)
