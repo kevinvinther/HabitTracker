@@ -1,3 +1,5 @@
+using CsvHelper.Configuration.Attributes;
+
 namespace HabitTracker;
 
 
@@ -12,7 +14,9 @@ public class HabiticaImporter : IImporter
 
     private class ParsedHabit
     {
+        [Name("Task Name")]
         public required string Task_Name { get; set; }
+        [Name("Date")]
         public required string Date { get; set; }
     }
 
