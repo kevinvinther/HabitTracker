@@ -47,16 +47,24 @@ public class HabiticaImporter : IImporter
 
         foreach (var habit in dictionary)
         {
-            List<DateTime> dts = new List<DateTime>();
+            var dts = ParseDateStrings(habit.Value);
 
-            foreach (var date in habit.Value)
-            {
-                dts.Add(DateTimeHelper.Parse(date));
-            }
             habits.Add(new Habit(0, habit.Key, dts.ToArray()));
         }
 
         return habits;
+    }
+
+    private List<DateTime> ParseDateStrings(IEnumerable<string> date_list)
+    {
+        List<DateTime> dts = new List<DateTime>();
+
+        foreach (var date in date_list)
+        {
+            dts.Add(DateTimeHelper.Parse(date));
+        }
+
+        return dts;
     }
 
     public IEnumerable<Habit> ImportHabits(string filePath)
