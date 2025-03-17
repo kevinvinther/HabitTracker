@@ -123,6 +123,6 @@ public class HabiticaTests
     [Fact]
     public void ImportHabits_ShouldThrow_InvalidHeaders()
     {
-        Assert.Throws<HeaderValidationException>(() =>_habiticaImporter.ImportHabits(Invalid1));
+        Assert.Throws<HeaderValidationException>(() => _habiticaImporter.ImportHabits(Invalid1));
     }
 }
