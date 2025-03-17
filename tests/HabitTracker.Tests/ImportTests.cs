@@ -10,7 +10,7 @@ public class ImportTests
 
     public ImportTests()
     {
-        _repo = new HabitRepository();
+        _repo = new HabitRepository("habits_test.db");
         _manager = new HabitManager(_repo);
         _importer = new Import(_manager);
 
