@@ -133,7 +133,14 @@ namespace HabitTracker
             _console.WriteLine("Please enter the name of your new habit: ");
             String name = GetStringInput();
             Habit newHabit = new Habit(0, name);
-            Manager.AddHabit(newHabit);
+
+            try
+            {
+                Manager.AddHabit(newHabit);
+            } catch (InvalidOperationException ex) {
+                _console.WriteLine(ex.Message);
+                _console.ReadKey();
+            }
         }
 
         /// <summary>
