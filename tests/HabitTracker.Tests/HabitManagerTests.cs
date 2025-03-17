@@ -179,7 +179,7 @@ namespace HabitTracker.Tests
         [InlineData("2028-03-02 00:01:00")]
         [InlineData("2044-01-03 20:01:00")]
         [InlineData("2124-01-01 10:01:00")]
-        public void GetHabitsNotCompletedOnday_ShouldReturn_HabitsNotCompleted(string date)
+        public void GetHabitsNotCompletedOnDay_ShouldReturn_HabitsNotCompleted(string date)
         {
             var dt = DateTimeHelper.Parse(date);
             HabitManager manager = CreateHabitManager();
