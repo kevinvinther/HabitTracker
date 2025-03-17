@@ -98,7 +98,8 @@ public class HabitRepository : IHabitRepository
     /// Adds a new habit to the database.
     /// </summary>
     /// <param name="habit">The Habit to add to the database.</param>
-    public void AddHabit(Habit habit)
+    /// <returns>The ID of the entry of the habit in the database.</returns>
+    public long AddHabit(Habit habit)
     {
         if (GetHabits().Any(h => h.Name == habit.Name))
         {
@@ -116,6 +117,8 @@ public class HabitRepository : IHabitRepository
         var result = lastIdCmd.ExecuteScalar();
 
         habit.setId(result != null ? Convert.ToInt64(result) : -1);
+
+        return habit.Id;
     }
 
 
