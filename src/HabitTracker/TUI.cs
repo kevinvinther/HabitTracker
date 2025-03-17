@@ -39,6 +39,7 @@ namespace HabitTracker
                 DisplayMenuOptions();
 
                 int option = GetNumberInput();
+                Console.Clear();
                 if (!HandleMenuOption(option))
                     return;
             }
@@ -82,6 +83,7 @@ namespace HabitTracker
             Console.WriteLine("3. Manage Habit");
             Console.WriteLine("4. Get Max Streaks");
             Console.WriteLine("5. Get Current Streaks");
+            Console.WriteLine("6. Import Data form Other Habit Tracker");
             Console.WriteLine("9. Quit Program");
             Console.ForegroundColor = ConsoleColor.White;
         }
@@ -109,7 +111,8 @@ namespace HabitTracker
                 { 2, RemoveHabit },
                 { 3, ManageHabit },
                 { 4, GetMaxStreaks },
-                { 5, GetCurrentStreaks}
+                { 5, GetCurrentStreaks},
+                { 6, Importer}
             };
 
             if (option == 9)
@@ -350,6 +353,35 @@ Input Date:");
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
+        }
+
+        private void Importer()
+        {
+            Console.WriteLine("=== Import Data ===");
+            Console.WriteLine("Please be aware that currently there is only the option to import from Habitica. Further importing options will be available in the future.");
+            Console.WriteLine("Importing your habits more than once will duplicate them.");
+
+            Console.WriteLine("From the directory you opened HabitTracker in, please type the relative or absolute path to your Habitica habits user data. Leave blank if you want to go back.");
+            Console.Write("File path (press enter to accept): ");
+            var filePath = Console.ReadLine();
+
+            if (filePath == null)
+                return;
+
+            ImportHabitica(filePath);
+        }
+
+        private void ImportHabitica(string filePath)
+        {
+            var importer = new Import(_manager);
+            var habitica = new HabiticaImporter(importer);
+
+
+            try {
+                habitica.ImportData(filePath);
+            } catch (Exception ex) {
+                Console.WriteLine($"Import failed. Error: {ex.Message}");
+            }
         }
     }
 }
