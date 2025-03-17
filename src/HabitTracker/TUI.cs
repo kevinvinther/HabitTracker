@@ -377,9 +377,12 @@ Input Date:");
             var habitica = new HabiticaImporter(importer);
 
 
-            try {
+            try
+            {
                 habitica.ImportData(filePath);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Console.WriteLine($"Import failed. Error: {ex.Message}");
             }
         }
