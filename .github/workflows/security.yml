@@ -1,3 +1,7 @@
+name: Check Security
+
+on: [push, pull_request]
+
 jobs:
   setup-dotnet:
     uses: ./.github/workflows/dotnet.yml
