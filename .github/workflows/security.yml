@@ -1,0 +1,13 @@
+jobs:
+  setup-dotnet:
+    uses: ./.github/workflows/dotnet.yml
+
+  security:
+    runs-on: ubuntu-latest
+    needs: setup-dotnet
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run .NET Security Analysis
+        run: dotnet list package --vulnerable

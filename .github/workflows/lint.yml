@@ -1,10 +1,9 @@
-name: Reusable .NET Setup
+name: Code Linting
 
-on:
-  workflow_call:
+on: [pull_request, push]
 
 jobs:
-  setup-dotnet:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -14,7 +13,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "9.0"
-          cache: true
 
-      - name: Restore dependencies
-        run: dotnet restore --use-lock-file
+      - name: Run .NET Format
+        run: dotnet format --verify-no-changes
