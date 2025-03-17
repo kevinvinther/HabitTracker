@@ -14,5 +14,8 @@ jobs:
         with:
           dotnet-version: "9.0"
 
+      - name: Restore dependencies
+        run: dotnet restore
+
       - name: Run .NET Security Analysis
         run: dotnet list package --vulnerable

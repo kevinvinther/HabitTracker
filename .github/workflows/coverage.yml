@@ -41,7 +41,7 @@ jobs:
           debug: true
 
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage
           path: coverage-report
