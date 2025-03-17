@@ -3,18 +3,21 @@ name: Code Coverage
 on: [push, pull_request]
 
 jobs:
-  setup-dotnet:
-    uses: ./.github/workflows/dotnet.yml
-
   code-coverage:
     if: github.actor != 'nektos/act'
     name: Code Coverage
     runs-on: ubuntu-latest
-    needs: setup-dotnet
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "9.0"
+
+      - name: Restore dependencies
+        run: dotnet restore
 
       - name: Run tests with coverage
         run: |
