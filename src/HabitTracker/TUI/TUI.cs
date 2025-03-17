@@ -4,7 +4,7 @@ namespace HabitTracker
 
     public class Tui
     {
-        public HabitManager Manager {get; private set;}
+        public HabitManager Manager { get; private set; }
         private IConsole _console;
 
         /// <summary>
@@ -232,9 +232,12 @@ Input Date:");
             var inputDate = _console.ReadLine();
             var parsedDate = DateTimeHelper.TryParseUserDate(inputDate);
 
-            if (parsedDate.HasValue)  {
+            if (parsedDate.HasValue)
+            {
                 Manager.AddCompletion(habit.Id, parsedDate.Value);
-            } else {
+            }
+            else
+            {
                 _console.WriteLine("Could not parse date! Press any key to continue.");
                 _console.ReadKey();
             }

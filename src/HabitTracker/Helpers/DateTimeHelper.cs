@@ -33,12 +33,15 @@ public static class DateTimeHelper
         if (string.IsNullOrWhiteSpace(input))
             return null;
 
-        try {
+        try
+        {
             if (DateOnlyRegex.IsMatch(input))
                 return DateTimeHelper.Parse(input + " 00:00:00");
             if (DateTimeRegex.IsMatch(input))
                 return DateTimeHelper.Parse(input);
-        } catch (FormatException) {
+        }
+        catch (FormatException)
+        {
             return null;
         }
 
