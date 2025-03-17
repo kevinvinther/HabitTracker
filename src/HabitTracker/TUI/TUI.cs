@@ -4,7 +4,7 @@ namespace HabitTracker
 
     public class Tui
     {
-        private readonly HabitManager _manager;
+        public HabitManager Manager {get; private set;}
         private IConsole _console;
 
         /// <summary>
@@ -14,7 +14,7 @@ namespace HabitTracker
         public Tui(HabitManager manager, IConsole console)
         {
             _console = console;
-            _manager = manager;
+            Manager = manager;
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace HabitTracker
         /// </summary>
         public void MainMenu()
         {
-            _manager.InitializeDatabase();
+            Manager.InitializeDatabase();
 
             while (true)
             {
@@ -31,7 +31,7 @@ namespace HabitTracker
 
                 DisplayHeader();
 
-                var habits = _manager.GetHabits().ToList();
+                var habits = Manager.GetHabits().ToList();
 
                 if (habits.Any())
                     DisplayHabits(habits);
@@ -96,7 +96,7 @@ namespace HabitTracker
         private void DisplayHabitsNotCompletedToday(List<Habit> habits)
         {
             _console.WriteLine("Habits which have not been completed today:");
-            PrintElementsWithIndex(_manager.GetHabitsNotCompletedOnDay(DateTime.Today));
+            PrintElementsWithIndex(Manager.GetHabitsNotCompletedOnDay(DateTime.Today));
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace HabitTracker
             _console.WriteLine("Please enter the name of your new habit: ");
             String name = GetStringInput();
             Habit newHabit = new Habit(0, name);
-            _manager.AddHabit(newHabit);
+            Manager.AddHabit(newHabit);
         }
 
         /// <summary>
@@ -143,12 +143,12 @@ namespace HabitTracker
         {
             _console.WriteLine("Please enter the name of the habit you want to remove: ");
             var delete = GetStringInput();
-            Habit? toBeDeleted = _manager
+            Habit? toBeDeleted = Manager
                 .GetHabits()
                 .FirstOrDefault(h => h.Name.ToLower() == delete.ToLower());
             if (toBeDeleted != null)
             {
-                _manager.RemoveHabit(toBeDeleted.Id);
+                Manager.RemoveHabit(toBeDeleted.Id);
             }
             else
             {
@@ -161,7 +161,7 @@ namespace HabitTracker
         /// </summary>
         private void ManageHabit()
         {
-            var habits = _manager.GetHabits();
+            var habits = Manager.GetHabits();
 
             _console.WriteLine("Please choose a habit: ");
             PrintElementsWithIndex(habits);
@@ -212,7 +212,7 @@ namespace HabitTracker
             switch (index)
             {
                 case 1:
-                    _manager.AddCompletion(habit.Id, DateTime.Now);
+                    Manager.AddCompletion(habit.Id, DateTime.Now);
                     break;
                 case 2:
                     AddOldCompletion(habit);
@@ -233,7 +233,7 @@ Input Date:");
             var parsedDate = DateTimeHelper.TryParseUserDate(inputDate);
 
             if (parsedDate.HasValue)  {
-                _manager.AddCompletion(habit.Id, parsedDate.Value);
+                Manager.AddCompletion(habit.Id, parsedDate.Value);
             } else {
                 _console.WriteLine("Could not parse date! Press any key to continue.");
                 _console.ReadKey();
@@ -255,7 +255,7 @@ Input Date:");
                 throw new ArgumentException("You must choose a valid index!");
             }
             completionIndex -= 1;
-            _manager.RemoveCompletion(habit.Id, habit.Completions[completionIndex]);
+            Manager.RemoveCompletion(habit.Id, habit.Completions[completionIndex]);
             _console.WriteLine($"Completion {habit.Completions[completionIndex]} deleted.");
             _console.WriteLine("Press any key to continue.");
             _console.ReadKey();
@@ -314,7 +314,7 @@ Input Date:");
         {
             _console.WriteLine("=== Max Streaks ===");
 
-            foreach (var h in _manager.GetHabits())
+            foreach (var h in Manager.GetHabits())
             {
                 if (h.Completions.Any())
                     _console.WriteLine($"{h}: {h.GetLongestStreak()}");
@@ -328,7 +328,7 @@ Input Date:");
         {
             _console.WriteLine("=== Current Streaks ===");
 
-            foreach (var h in _manager.GetHabits())
+            foreach (var h in Manager.GetHabits())
             {
                 if (h.Completions.Any())
                     _console.WriteLine($"{h}: {h.GetCurrentStreak()}");
@@ -356,7 +356,7 @@ Input Date:");
 
         private void ImportHabitica(string filePath)
         {
-            var importer = new Import(_manager);
+            var importer = new Import(Manager);
             var habitica = new HabiticaImporter(importer);
 
 
