@@ -1,7 +1,6 @@
 namespace HabitTracker
 {
     using System.Linq;
-    using System.Text.RegularExpressions;
 
     public class Tui
     {
@@ -95,7 +94,7 @@ namespace HabitTracker
         private void DisplayHabitsNotCompletedToday(List<Habit> habits)
         {
             Console.WriteLine("Habits which have not been completed today:");
-            PrintElementsWithIndex(GetHabitsNotCompletedOnDay(habits, DateTime.Today));
+            PrintElementsWithIndex(_manager.GetHabitsNotCompletedOnDay(DateTime.Today));
         }
 
         /// <summary>
