@@ -137,7 +137,9 @@ namespace HabitTracker
             try
             {
                 Manager.AddHabit(newHabit);
-            } catch (InvalidOperationException ex) {
+            }
+            catch (InvalidOperationException ex)
+            {
                 _console.WriteLine(ex.Message);
                 _console.ReadKey();
             }

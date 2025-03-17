@@ -145,14 +145,14 @@ public class TuiTests
     }
 
     // TODO: TUI must be changed, propably use SystemConsole to parse input. Or just check if it's something I've missed. Anyway this test errors:
-// [xUnit.net 00:00:00.25]     HabitTracker.TuiTests.MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion [FAIL]
-// [xUnit.net 00:00:00.25]       System.ArgumentException : Input must be a valid number.
-// [xUnit.net 00:00:00.25]       Stack Trace:
-// [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/src/HabitTracker/TUI/TUI.cs(302,0): at HabitTracker.Tui.GetNumberInput()
-// [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/src/HabitTracker/TUI/TUI.cs(42,0): at HabitTracker.Tui.MainMenu()
-// [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/tests/HabitTracker.Tests/TuiTests.cs(159,0): at HabitTracker.TuiTests.MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion()
-// [xUnit.net 00:00:00.26]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-// [xUnit.net 00:00:00.26]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    // [xUnit.net 00:00:00.25]     HabitTracker.TuiTests.MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion [FAIL]
+    // [xUnit.net 00:00:00.25]       System.ArgumentException : Input must be a valid number.
+    // [xUnit.net 00:00:00.25]       Stack Trace:
+    // [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/src/HabitTracker/TUI/TUI.cs(302,0): at HabitTracker.Tui.GetNumberInput()
+    // [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/src/HabitTracker/TUI/TUI.cs(42,0): at HabitTracker.Tui.MainMenu()
+    // [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/tests/HabitTracker.Tests/TuiTests.cs(159,0): at HabitTracker.TuiTests.MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion()
+    // [xUnit.net 00:00:00.26]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+    // [xUnit.net 00:00:00.26]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
     // [Fact]
     // public void MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion()
     // {
