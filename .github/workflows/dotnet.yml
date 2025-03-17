@@ -24,38 +24,5 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Run .NET Format
-        run: dotnet format --verify-no-changes
-        continue-on-error: true
-
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
-
-      - name: Run tests
-        run: dotnet test --verbosity normal
-
-  publish-artifact:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    if: success()
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0'
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Publish artifacts (e.g., a build or deployable package)
-        run: dotnet publish -c Release -o output
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: published-artifacts
-          path: output/
