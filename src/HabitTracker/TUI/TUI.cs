@@ -229,19 +229,13 @@ Example: 2025-03-14 16:39:00. You may omit the time.
 Input Date:");
 
             var inputDate = Console.ReadLine();
-            Regex dt = new Regex(@"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$");
-            Regex d = new Regex(@"^\d{4}-\d{2}-\d{2}$");
+            var parsedDate = DateTimeHelper.TryParseUserDate(inputDate);
 
-            var dtMatch = dt.Matches(inputDate ?? "");
-            var dMatch = d.Matches(inputDate ?? "");
-
-            if (dMatch.Any())
-            {
-                _manager.AddCompletion(habit.Id, DateTimeHelper.Parse(dMatch[0].Value + " 00:00:00"));
-            }
-            else if (dtMatch.Any())
-            {
-                _manager.AddCompletion(habit.Id, DateTimeHelper.Parse(dtMatch[0].Value));
+            if (parsedDate.HasValue)  {
+                _manager.AddCompletion(habit.Id, parsedDate.Value);
+            } else {
+                Console.WriteLine("Could not parse date! Press any key to continue.");
+                Console.ReadKey();
             }
         }
 
@@ -313,18 +307,6 @@ Input Date:");
             {
                 throw new ArgumentException("You must type a habit name.");
             }
-        }
-
-        /// <summary>
-        /// Gets the habits which have not been completed on a specific date.
-        /// </summary>
-        /// <param name="habits">The habits to filter through.</param>
-        /// <param name="dt">The date you want to filter off</param>
-        /// <returns>The habits whose newest completion was not today.</returns>
-        private List<Habit> GetHabitsNotCompletedOnDay(List<Habit> habits, DateTime dt)
-        {
-            return habits.Where(habit => !habit.Completions.Any() || habit.Completions.Last().Date == dt.Date)
-                .ToList();
         }
 
         private void GetMaxStreaks()
