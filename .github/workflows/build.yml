@@ -1,12 +1,6 @@
 name: .NET CI/CD Workflow
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   build-and-test:
@@ -19,7 +13,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0'
+          dotnet-version: "9.0"
 
       - name: Restore dependencies
         run: dotnet restore

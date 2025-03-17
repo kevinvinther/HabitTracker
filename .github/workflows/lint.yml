@@ -1,0 +1,18 @@
+name: Code Linting
+
+on: [pull_request, push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "9.0"
+
+      - name: Run .NET Format
+        run: dotnet format --verify-no-changes
