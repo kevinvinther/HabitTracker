@@ -6,7 +6,8 @@
         {
             HabitRepository repository = new HabitRepository();
             HabitManager manager = new HabitManager(repository);
-            Tui tui = new Tui(manager);
+            IConsole console = new SystemConsole();
+            Tui tui = new Tui(manager, console);
             tui.MainMenu();
         }
     }
