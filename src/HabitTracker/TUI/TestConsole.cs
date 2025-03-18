@@ -10,8 +10,20 @@ public class TestConsole : IConsole
 
     public void Clear() => Output.Add("[Clear]");
     public void WriteLine(string message) => Output.Add($"[WriteLine] {message}");
-    public string ReadLine() => _inputQueue.Count > 0 ? _inputQueue.Dequeue() : string.Empty;
-    public void Write(string message) => Output.Add($"[Write] {message}");
-    public string ReadKey() => _inputQueue.Count > 0 ? _inputQueue.Dequeue() : string.Empty;
 
+    public string ReadLine()
+    {
+        if (_inputQueue.Count == 0) throw new InvalidOperationException("No input available.");
+
+        return _inputQueue.Dequeue();
+    }
+
+    public void Write(string message) => Output.Add($"[Write] {message}");
+
+    public string ReadKey()
+    {
+        if (_inputQueue.Count == 0) throw new InvalidOperationException("No key press available.");
+
+        return _inputQueue.Dequeue();
+    }
 }
