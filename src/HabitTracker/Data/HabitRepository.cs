@@ -67,6 +67,7 @@ public class HabitRepository : IHabitRepository
             habit.SetCompletions(GetCompletions(habit.Id));
             habits.Add(habit);
         }
+
         return habits;
     }
 
@@ -116,7 +117,7 @@ public class HabitRepository : IHabitRepository
         using var lastIdCmd = new SqliteCommand("SELECT last_insert_rowid();", connection);
         var result = lastIdCmd.ExecuteScalar();
 
-        habit.setId(result != null ? Convert.ToInt64(result) : -1);
+        habit.setId(Convert.ToInt64(result));
 
         return habit.Id;
     }
@@ -151,7 +152,9 @@ public class HabitRepository : IHabitRepository
 
         using var connection = GetOpenConnection();
 
-        using var deleteCompletionCmd = new SqliteCommand("DELETE FROM Completions WHERE HabitId = @HabitId AND CompletionTime = @Date", connection);
+        using var deleteCompletionCmd =
+            new SqliteCommand("DELETE FROM Completions WHERE HabitId = @HabitId AND CompletionTime = @Date",
+                connection);
         deleteCompletionCmd.Parameters.AddWithValue("@HabitId", habitId);
         deleteCompletionCmd.Parameters.AddWithValue("@Date", formattedDateTime);
         int rowsAffected = deleteCompletionCmd.ExecuteNonQuery();
@@ -178,7 +181,7 @@ public class HabitRepository : IHabitRepository
 
         insertHabitCmd.Parameters.AddWithValue("@habitId", habitId);
         insertHabitCmd.Parameters.AddWithValue("@CompletionTime",
-                                               DateTimeHelper.Format(completionTime));
+            DateTimeHelper.Format(completionTime));
         insertHabitCmd.ExecuteNonQuery();
     }
 }
