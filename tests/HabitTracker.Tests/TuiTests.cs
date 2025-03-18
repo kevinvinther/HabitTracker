@@ -170,7 +170,7 @@ public class TuiTests
 
         foreach (var habit in tui.Manager.GetHabits())
         {
-            tui.Manager.RemoveHabit(habit.Id); 
+            tui.Manager.RemoveHabit(habit.Id);
         }
     }
 
@@ -227,8 +227,8 @@ public class TuiTests
         tui.MainMenu();
 
         Assert.Contains("[WriteLine] You must choose a valid index!", console.Output);
-        
-        RemoveHabits(tui.Manager); 
+
+        RemoveHabits(tui.Manager);
     }
 
     [Fact]
@@ -241,10 +241,10 @@ public class TuiTests
             "9", // Add Completion
             "9" // Quit
         });
-        
+
         var (tui, _) = CreateTui(inputs);
         tui.MainMenu();
-        
+
         RemoveHabits(tui.Manager);
     }
 
@@ -262,7 +262,7 @@ public class TuiTests
 
         var (tui, _) = CreateTui(inputs);
         tui.MainMenu();
-        
+
         RemoveHabits(tui.Manager);
     }
 
@@ -278,7 +278,7 @@ public class TuiTests
         tui.MainMenu();
 
         Assert.Contains("[WriteLine] Could not parse date! Press any key to continue.", console.Output);
-        
+
         RemoveHabits(tui.Manager);
     }
 
@@ -288,7 +288,7 @@ public class TuiTests
         var inputs = new Queue<string>(new[] { "1", "", // Add empty Habit
                                                "", // Accept message
                                                "9"}); // Exit
-        
+
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
 
@@ -307,12 +307,12 @@ public class TuiTests
                                                "2", "2024-01-02", // Add date 2
                                                "4", "", // Get max streaks and accept
                                                "9"}); // Exit
-        
+
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
 
         Assert.Contains("[WriteLine] Anki: 2", console.Output);
-        
+
         RemoveHabits(tui.Manager);
     }
 
@@ -331,22 +331,22 @@ public class TuiTests
                                                "1", // Add date now
                                                "5", "", // Get current streaks and accept
                                                "9"}); // Exit
-        
+
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
 
         Assert.Contains("[WriteLine] Anki: 1", console.Output);
-        
+
         RemoveHabits(tui.Manager);
     }
 
     [Fact]
     public void MainMenu_Importer_HandlesWrongInput()
     {
-        var inputs = new Queue<string>(new[] { 
+        var inputs = new Queue<string>(new[] {
                                                "6", "", // Write Empty 
                                                "9"}); // Exit
-        
+
         var (tui, _) = CreateTui(inputs);
         tui.MainMenu();
 
@@ -356,29 +356,29 @@ public class TuiTests
     [Fact]
     public void MainMenu_Importer_HandlesNonexistentFile()
     {
-        var inputs = new Queue<string>(new[] { 
+        var inputs = new Queue<string>(new[] {
             "6", "hello.csv", // Write non-existent file
             "9"}); // Exit
-        
+
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
 
         Assert.NotEmpty(
             console.Output.Find(
                 c => c.StartsWith("[WriteLine] Import failed. Error: Could not find file")) ?? throw new InvalidOperationException());
-        
+
         RemoveHabits(tui.Manager);
     }
 
     const string ValidCsv = "../../../TestData/Habitica1.csv";
-    
+
     [Fact]
     public void MainMenu_Importer_HandlesWorkingFile()
     {
-        var inputs = new Queue<string>(new[] { 
+        var inputs = new Queue<string>(new[] {
             "6", ValidCsv, // Write valid file
             "9"}); // Exit
-        
+
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
         Assert.Contains("[WriteLine] = Se 1 forelæsning     =", console.Output);
@@ -386,7 +386,7 @@ public class TuiTests
         Assert.Contains("[WriteLine] = Læs 1 kapitel i en bog =", console.Output);
         Assert.Contains("[WriteLine] = Anki                 =", console.Output);
         Assert.Contains("[WriteLine] = Allergivaccine       =", console.Output);
-        
+
         RemoveHabits(tui.Manager);
     }
 }
