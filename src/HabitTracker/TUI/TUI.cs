@@ -39,10 +39,18 @@ namespace HabitTracker
                 DisplayHabitsNotCompletedToday(habits);
                 DisplayMenuOptions();
 
-                int option = GetNumberInput();
-                _console.Clear();
-                if (!HandleMenuOption(option))
-                    return;
+                try
+                {
+                    int option = GetNumberInput();
+                    _console.Clear();
+                    if (!HandleMenuOption(option))
+                        return;
+                }
+                catch (ArgumentException ex)
+                {
+                    _console.WriteLine(ex.Message);
+                    _console.ReadKey();
+                }
             }
         }
 
@@ -204,7 +212,15 @@ namespace HabitTracker
                     AddCompletion(habit);
                     break;
                 case 2:
-                    RemoveCompletion(habit);
+                    try
+                    {
+                        RemoveCompletion(habit);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        _console.WriteLine(ex.Message);
+                        _console.ReadKey();
+                    }
                     break;
                 default:
                     return;
