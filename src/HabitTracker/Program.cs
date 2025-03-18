@@ -1,15 +1,19 @@
 ﻿namespace HabitTracker
 {
-    static class Program
+    public static class Program
     {
-        static void Main()
+        public static void RunApplication(IHabitRepository repository, IConsole console)
         {
-            HabitRepository repository = new HabitRepository();
             HabitManager manager = new HabitManager(repository);
-            IConsole console = new SystemConsole();
             Tui tui = new Tui(manager, console);
             tui.MainMenu();
         }
+
+        public static void Main()
+        {
+            IHabitRepository repository = new HabitRepository();
+            IConsole console = new SystemConsole();
+            RunApplication(repository, console);
+        }
     }
 }
-
