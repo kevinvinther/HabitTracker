@@ -4,5 +4,10 @@ public class SystemConsole : IConsole
     public void WriteLine(string message) => Console.WriteLine(message);
     public string ReadLine() => Console.ReadLine() ?? "";
     public void Write(string message) => Console.Write(message);
-    public string ReadKey() => Console.ReadKey().ToString() ?? "";
+
+    public string ReadKey()
+    {
+        var key = Console.In.Read();
+        return key == -1 ? "" : ((char)key).ToString();
+    }
 }
