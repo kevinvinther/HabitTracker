@@ -10,7 +10,10 @@
 
 This is a simple project made in order to help me learn C#.
 
-Currently it has the following features: 
+Comes with the following features: 
 * Adding and removing habits
 * Adding and removing completions
-* A semi-functioning TUI
+* A functioning, but incredibly bad UX, TUI
+* 100% (as of writing) code coverage
+* Completion Streaks (max and current)
+* Importing from Habitica
