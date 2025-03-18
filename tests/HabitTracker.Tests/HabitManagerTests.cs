@@ -184,7 +184,7 @@ namespace HabitTracker.Tests
             var dt = DateTimeHelper.Parse(date);
             HabitManager manager = CreateHabitManager();
 
-            Habit anki = new Habit(1, "Anki", new DateTime[] { new DateTime(2024, 1, 1, 0, 0, 0) });
+            Habit anki = new Habit(1, "Anki", new[] { new DateTime(2024, 1, 1, 0, 0, 0) });
 
             var id = manager.AddHabit(anki);
 
@@ -201,8 +201,8 @@ namespace HabitTracker.Tests
             var dt = DateTimeHelper.Parse(date);
             HabitManager manager = CreateHabitManager();
 
-            Habit anki = new Habit(1, "Anki", new DateTime[] { new DateTime(2024, 1, 1, 0, 1, 0) });
-            Habit exercise = new Habit(2, "Exercise", new DateTime[] { new DateTime(2020, 2, 1, 0, 1, 0) });
+            Habit anki = new Habit(1, "Anki", new[] { new DateTime(2024, 1, 1, 0, 1, 0) });
+            Habit exercise = new Habit(2, "Exercise", new[] { new DateTime(2020, 2, 1, 0, 1, 0) });
 
             var ankiId = manager.AddHabit(anki);
             var exerciseId = manager.AddHabit(exercise);
