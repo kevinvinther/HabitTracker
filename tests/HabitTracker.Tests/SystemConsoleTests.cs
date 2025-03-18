@@ -18,10 +18,17 @@ public class SystemConsoleTests
     }
 
     [Fact]
-    public void ReadKey_Works_WithoutInput()
+    public void ReadKey_Works_WithBlankInput()
     {
         var input = new StringReader("");
         Console.SetIn(input);
         Assert.Equal("", _systemConsole.ReadKey());
+    }
+
+    [Fact]
+    public void ReadKey_ReturnsCorrectKey_WithInput()
+    {
+        Console.SetIn(new StringReader("a"));
+        Assert.Equal("a", _systemConsole.ReadKey());
     }
 }
