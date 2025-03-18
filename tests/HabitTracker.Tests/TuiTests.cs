@@ -144,33 +144,27 @@ public class TuiTests
         tui.Manager.RemoveHabit(tui.Manager.GetHabits().First().Id);
     }
 
-    // TODO: TUI must be changed, propably use SystemConsole to parse input. Or just check if it's something I've missed. Anyway this test errors:
-    // [xUnit.net 00:00:00.25]     HabitTracker.TuiTests.MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion [FAIL]
-    // [xUnit.net 00:00:00.25]       System.ArgumentException : Input must be a valid number.
-    // [xUnit.net 00:00:00.25]       Stack Trace:
-    // [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/src/HabitTracker/TUI/TUI.cs(302,0): at HabitTracker.Tui.GetNumberInput()
-    // [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/src/HabitTracker/TUI/TUI.cs(42,0): at HabitTracker.Tui.MainMenu()
-    // [xUnit.net 00:00:00.26]         /home/kevin/Documents/Programming/HabitTracker/tests/HabitTracker.Tests/TuiTests.cs(159,0): at HabitTracker.TuiTests.MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion()
-    // [xUnit.net 00:00:00.26]            at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-    // [xUnit.net 00:00:00.26]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-    // [Fact]
-    // public void MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion()
-    // {
-    //     var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-    //                                            "3", "1", // Manage habit
-    //                                            "1", // Add Completion
-    //                                            "2", "2024-01-01 01:02:03",
-    //                                            "3", "1", // Manage Habit
-    //                                            "2", "1", //Remove completion
-    //                                            "9"}); // Exit
+    [Fact]
+    public void MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion()
+    {
+        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
+                                               "3", "1", // Manage habit
+                                               "1", // Add Completion
+                                               "2", "2024-01-01 01:02:03",
+                                               "3", "1", // Manage Hab"Anki", it
+                                               "2", "1", "", //Remove completion
+                                               "9"}); // Exit
 
-    //     var (tui, _) = createTui(inputs);
-    //     tui.MainMenu();
+        var (tui, console) = createTui(inputs);
+        tui.MainMenu();
 
-    //     Assert.Empty(tui.Manager.GetHabits()[0].Completions);
+        Assert.Empty(tui.Manager.GetHabits()[0].Completions);
 
-    //     tui.Manager.RemoveHabit(tui.Manager.GetHabits().First().Id);
-    // }
+        foreach (var habit in tui.Manager.GetHabits())
+        {
+            tui.Manager.RemoveHabit(habit.Id); 
+        }
+    }
 
     [Fact]
     public void MainMenu_ManageHabit_WrongID_ReturnsToMainMenu()
