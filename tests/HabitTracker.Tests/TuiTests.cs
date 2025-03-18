@@ -37,8 +37,11 @@ public class TuiTests
     [Fact]
     public void MainMenu_AddHabit_DoesntCreate_ExistingHabit()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki",
-            "1", "Anki", "", "9"});
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki",
+            "1", "Anki", "", "9"
+        });
 
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
@@ -76,11 +79,14 @@ public class TuiTests
     [Fact]
     public void MainMenu_ManageHabit_AddCompletion_AddsCompletion()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "1", // Add DateTime.Now()
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki", // Add Habit
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "1", // Add DateTime.Now()
+            "9"
+        }); // Exit
 
 
         var (tui, _) = CreateTui(inputs);
@@ -95,17 +101,20 @@ public class TuiTests
     [Fact]
     public void MainMenu_ManageHabit_AddCompletion_AddsCompletions()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "1", // Add DateTime.Now()
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "1", // Add DateTime.Now()
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "1", // Add DateTime.Now()
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki", // Add Habit
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "1", // Add DateTime.Now()
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "1", // Add DateTime.Now()
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "1", // Add DateTime.Now()
+            "9"
+        }); // Exit
 
         var (tui, _) = CreateTui(inputs);
         tui.MainMenu();
@@ -119,11 +128,14 @@ public class TuiTests
     [Fact]
     public void MainMenu_ManageHabit_AddCompletion_AddsSpecificCompletion()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "2", "2024-01-01",
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki", // Add Habit
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "2", "2024-01-01",
+            "9"
+        }); // Exit
 
         var (tui, _) = CreateTui(inputs);
         tui.MainMenu();
@@ -137,11 +149,14 @@ public class TuiTests
     [Fact]
     public void MainMenu_ManageHabit_AddCompletion_AddsSpecificCompletion_WithTime()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "2", "2024-01-01 01:02:03",
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki", // Add Habit
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "2", "2024-01-01 01:02:03",
+            "9"
+        }); // Exit
 
         var (tui, _) = CreateTui(inputs);
         tui.MainMenu();
@@ -155,13 +170,16 @@ public class TuiTests
     [Fact]
     public void MainMenu_ManageHabit_RemoveCompletion_RemovesCompletion()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "2", "2024-01-01 01:02:03",
-                                               "3", "1", // Manage Hab"Anki", it
-                                               "2", "1", "", //Remove completion
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki", // Add Habit
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "2", "2024-01-01 01:02:03",
+            "3", "1", // Manage Hab"Anki", it
+            "2", "1", "", //Remove completion
+            "9"
+        }); // Exit
 
         var (tui, _) = CreateTui(inputs);
         tui.MainMenu();
@@ -177,9 +195,12 @@ public class TuiTests
     [Fact]
     public void MainMenu_ManageHabit_WrongID_ReturnsToMainMenu()
     {
-        var inputs = new Queue<string>(new[] { "3", "1", // Manage (N/E) habit
-                                               "", // Simulate Enter
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "3", "1", // Manage (N/E) habit
+            "", // Simulate Enter
+            "9"
+        }); // Exit
 
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
@@ -269,11 +290,14 @@ public class TuiTests
     [Fact]
     public void MainMenu_AddOldCompletion_Handles_UnparsableDate()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "2", "2024-01-01 00:02", "", // Unparsable date
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki", // Add Habit
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "2", "2024-01-01 00:02", "", // Unparsable date
+            "9"
+        }); // Exit
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
 
@@ -285,9 +309,12 @@ public class TuiTests
     [Fact]
     public void MainMenu_GetStringInput_HandlesEmptyInput()
     {
-        var inputs = new Queue<string>(new[] { "1", "", // Add empty Habit
-                                               "", // Accept message
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "", // Add empty Habit
+            "", // Accept message
+            "9"
+        }); // Exit
 
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
@@ -298,15 +325,18 @@ public class TuiTests
     [Fact]
     public void MainMenu_GetMaxStreaks_GetsCorrectStreaks()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "2", "2024-01-01", // Add date 1
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "2", "2024-01-02", // Add date 2
-                                               "4", "", // Get max streaks and accept
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki", // Add Habit
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "2", "2024-01-01", // Add date 1
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "2", "2024-01-02", // Add date 2
+            "4", "", // Get max streaks and accept
+            "9"
+        }); // Exit
 
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
@@ -319,18 +349,21 @@ public class TuiTests
     [Fact]
     public void MainMenu_GetCurrentStreaks_GetsCorrectStreaks()
     {
-        var inputs = new Queue<string>(new[] { "1", "Anki", // Add Habit
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "2", "2024-01-01", // Add date 1
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "2", "2024-01-02", // Add date 2
-                                               "3", "1", // Manage habit
-                                               "1", // Add Completion
-                                               "1", // Add date now
-                                               "5", "", // Get current streaks and accept
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "1", "Anki", // Add Habit
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "2", "2024-01-01", // Add date 1
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "2", "2024-01-02", // Add date 2
+            "3", "1", // Manage habit
+            "1", // Add Completion
+            "1", // Add date now
+            "5", "", // Get current streaks and accept
+            "9"
+        }); // Exit
 
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
@@ -343,9 +376,11 @@ public class TuiTests
     [Fact]
     public void MainMenu_Importer_HandlesWrongInput()
     {
-        var inputs = new Queue<string>(new[] {
-                                               "6", "", // Write Empty 
-                                               "9"}); // Exit
+        var inputs = new Queue<string>(new[]
+        {
+            "6", "", // Write Empty 
+            "9"
+        }); // Exit
 
         var (tui, _) = CreateTui(inputs);
         tui.MainMenu();
@@ -356,16 +391,19 @@ public class TuiTests
     [Fact]
     public void MainMenu_Importer_HandlesNonexistentFile()
     {
-        var inputs = new Queue<string>(new[] {
+        var inputs = new Queue<string>(new[]
+        {
             "6", "hello.csv", // Write non-existent file
-            "9"}); // Exit
+            "9"
+        }); // Exit
 
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
 
         Assert.NotEmpty(
             console.Output.Find(
-                c => c.StartsWith("[WriteLine] Import failed. Error: Could not find file")) ?? throw new InvalidOperationException());
+                c => c.StartsWith("[WriteLine] Import failed. Error: Could not find file")) ??
+            throw new InvalidOperationException());
 
         RemoveHabits(tui.Manager);
     }
@@ -375,9 +413,11 @@ public class TuiTests
     [Fact]
     public void MainMenu_Importer_HandlesWorkingFile()
     {
-        var inputs = new Queue<string>(new[] {
+        var inputs = new Queue<string>(new[]
+        {
             "6", ValidCsv, // Write valid file
-            "9"}); // Exit
+            "9"
+        }); // Exit
 
         var (tui, console) = CreateTui(inputs);
         tui.MainMenu();
@@ -388,5 +428,27 @@ public class TuiTests
         Assert.Contains("[WriteLine] = Allergivaccine       =", console.Output);
 
         RemoveHabits(tui.Manager);
+    }
+
+    [Fact]
+    public void MainMenu_ShouldNotCrash_WhenInputIsEmpty_ReadLine()
+    {
+        var inputs = new Queue<string>();
+        var (tui, _) = CreateTui(inputs);
+
+        Assert.Throws<InvalidOperationException>(() => tui.MainMenu());
+    }
+
+    [Fact]
+    public void MainMenu_ShouldNotCrash_WhenInputIsEmpty_ReadKey()
+    {
+        var inputs = new Queue<string>(new[]
+        {
+            "4"
+        }); // Inputs until readKey
+
+        var (tui, _) = CreateTui(inputs);
+
+        Assert.Throws<InvalidOperationException>(() => tui.MainMenu());
     }
 }
