@@ -376,9 +376,6 @@ Input Date:");
             _console.Write("File path (press enter to accept): ");
             var filePath = _console.ReadLine();
 
-            if (filePath == null)
-                return;
-
             ImportHabitica(filePath);
         }
 
