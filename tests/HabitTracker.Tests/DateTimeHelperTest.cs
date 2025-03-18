@@ -32,5 +32,31 @@ namespace HabitTracker.Tests
 
             Assert.Equal(expected, DateTimeHelper.Parse(date));
         }
+
+        [Theory]
+        [InlineData("2025-03-14 16:39:00", "2025-03-14 16:39:00")]
+        [InlineData("2025-03-14", "2025-03-14 00:00:00")]
+        [InlineData("2023-01-01", "2023-01-01 00:00:00")]
+        public void TryParseUserDate_ValidFormats_ReturnsCorrectDateTime(string input, string expected)
+        {
+            var result = DateTimeHelper.TryParseUserDate(input);
+
+            Assert.NotNull(result);
+            Assert.Equal(DateTime.Parse(expected), result);
+        }
+
+        [Theory]
+        [InlineData("invalid")]
+        [InlineData("2025-03-32")]
+        [InlineData("03-14-2025 16:39:00")]
+        [InlineData("2025/03/14")]
+        [InlineData("")]
+        [InlineData(null)]
+        public void TryParseUserDate_InvalidFormats_ReturnsNull(string input)
+        {
+            var result = DateTimeHelper.TryParseUserDate(input);
+
+            Assert.Null(result);
+        }
     }
 }

@@ -172,5 +172,50 @@ namespace HabitTracker.Tests
 
             manager.RemoveHabit(anki.Id);
         }
+
+        [Theory]
+        [InlineData("2024-01-01 00:01:00")]
+        [InlineData("2020-02-01 00:01:00")]
+        [InlineData("2028-03-02 00:01:00")]
+        [InlineData("2044-01-03 20:01:00")]
+        [InlineData("2124-01-01 10:01:00")]
+        public void GetHabitsNotCompletedOnDay_ShouldReturn_HabitsNotCompleted(string date)
+        {
+            var dt = DateTimeHelper.Parse(date);
+            HabitManager manager = CreateHabitManager();
+
+            Habit anki = new Habit(1, "Anki", new[] { new DateTime(2024, 1, 1, 0, 0, 0) });
+
+            var id = manager.AddHabit(anki);
+
+            Assert.Single(manager.GetHabitsNotCompletedOnDay(dt));
+
+            manager.RemoveHabit(id);
+        }
+
+        [Theory]
+        [InlineData("2024-01-01 00:01:00")]
+        [InlineData("2020-02-01 00:01:00")]
+        public void GetHabitsNotCompletedOnDay_ShouldNotReturn_HabitsCompleted(string date)
+        {
+            var dt = DateTimeHelper.Parse(date);
+            HabitManager manager = CreateHabitManager();
+
+            Habit anki = new Habit(1, "Anki", new[] { new DateTime(2024, 1, 1, 0, 1, 0) });
+            Habit exercise = new Habit(2, "Exercise", new[] { new DateTime(2020, 2, 1, 0, 1, 0) });
+
+            var ankiId = manager.AddHabit(anki);
+            var exerciseId = manager.AddHabit(exercise);
+
+            manager.AddCompletion(ankiId, anki.Completions.FirstOrDefault());
+            manager.AddCompletion(exerciseId, exercise.Completions.FirstOrDefault());
+
+
+            Assert.Single(manager.GetHabitsNotCompletedOnDay(dt));
+
+            manager.RemoveHabit(ankiId);
+            manager.RemoveHabit(exerciseId);
+        }
+
     }
 }
