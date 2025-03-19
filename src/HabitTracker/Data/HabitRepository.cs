@@ -40,6 +40,14 @@ public class HabitRepository : IHabitRepository, IDisposable
         return count > 0;
     }
 
+    private bool HabitExistsByName(string name)
+    {
+        using var cmd = new SqliteCommand("SELECT COUNT(*) FROM Habits WHERE Name = @name", _connection);
+        cmd.Parameters.AddWithValue("@name", name);
+        var count = Convert.ToInt32(cmd.ExecuteScalar());
+        return count > 0;
+    }
+
     /// <summary>
     /// Gets a list of all the habits in the database.
     /// </summary>
@@ -89,7 +97,7 @@ public class HabitRepository : IHabitRepository, IDisposable
     /// <param name="habit">The Habit to add to the database.</param>
     public void AddHabit(Habit habit)
     {
-        if (GetHabits().Any(h => h.Name == habit.Name))
+        if (HabitExistsByName(habit.Name))
         {
             throw new InvalidOperationException($"A habit with name '{habit.Name}' already exists.");
         }
