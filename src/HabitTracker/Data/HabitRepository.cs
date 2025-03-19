@@ -95,7 +95,7 @@ public class HabitRepository : IHabitRepository, IDisposable
     /// Adds a new habit to the database.
     /// </summary>
     /// <param name="habit">The Habit to add to the database.</param>
-    public void AddHabit(Habit habit)
+    public long AddHabit(Habit habit)
     {
         if (HabitExistsByName(habit.Name))
         {
@@ -110,7 +110,9 @@ public class HabitRepository : IHabitRepository, IDisposable
         using var lastIdCmd = new SqliteCommand("SELECT last_insert_rowid();", _connection);
         var result = lastIdCmd.ExecuteScalar();
 
-        habit.setId(result != null ? Convert.ToInt64(result) : -1);
+        habit.setId(Convert.ToInt64(result));
+
+        return habit.Id;
     }
 
 
@@ -175,6 +177,6 @@ public class HabitRepository : IHabitRepository, IDisposable
     /// </summary>
     public void Dispose()
     {
-        _connection?.Dispose();
+        _connection.Dispose();
     }
 }
