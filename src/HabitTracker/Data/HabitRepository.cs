@@ -110,7 +110,7 @@ public class HabitRepository : IHabitRepository, IDisposable
         using var lastIdCmd = new SqliteCommand("SELECT last_insert_rowid();", _connection);
         var result = lastIdCmd.ExecuteScalar();
 
-        habit.setId(Convert.ToInt64(result));
+        habit.SetId(Convert.ToInt64(result));
 
         return habit.Id;
     }

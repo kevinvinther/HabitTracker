@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text;
 
 namespace HabitTracker
@@ -24,7 +23,9 @@ namespace HabitTracker
         /// <param name="name">The name of the habit</param>
         /// <returns>A new instance of the <see cref="Habit"/> class.</returns>
         public Habit(long id, string name)
-            : this(id, name, []) { }
+            : this(id, name, [])
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Habit"/> class.
@@ -39,6 +40,7 @@ namespace HabitTracker
             {
                 throw new ArgumentException("Name cannot be empty", nameof(name));
             }
+
             _id = id;
             _name = name;
             _completions = new List<DateTime>(completions);
@@ -118,6 +120,7 @@ namespace HabitTracker
             {
                 return [0];
             }
+
             List<int> streaks = new List<int>();
             int currentStreak = 0;
 
@@ -152,7 +155,7 @@ namespace HabitTracker
             return GetStreakArray().Max();
         }
 
-        public void setId(long id)
+        public void SetId(long id)
         {
             _id = id;
         }
