@@ -1,7 +1,5 @@
 namespace HabitTracker
 {
-    using System.Linq;
-
     public class Tui
     {
         public HabitManager Manager { get; private set; }
@@ -120,8 +118,8 @@ namespace HabitTracker
                 { 2, RemoveHabit },
                 { 3, ManageHabit },
                 { 4, GetMaxStreaks },
-                { 5, GetCurrentStreaks},
-                { 6, Importer}
+                { 5, GetCurrentStreaks },
+                { 6, Importer }
             };
 
             if (option == 9)
@@ -196,6 +194,7 @@ namespace HabitTracker
                 _console.ReadKey();
                 return;
             }
+
             _console.Clear();
 
             _console.WriteLine(habit.GetCompletionDates());
@@ -221,6 +220,7 @@ namespace HabitTracker
                         _console.WriteLine(ex.Message);
                         _console.ReadKey();
                     }
+
                     break;
                 default:
                     return;
@@ -250,12 +250,12 @@ namespace HabitTracker
         private void AddOldCompletion(Habit habit)
         {
             _console.WriteLine(
-            @"Please write the date in the following format: yyyy-MM-dd HH:mm:ss.
+                @"Please write the date in the following format: yyyy-MM-dd HH:mm:ss.
 Example: 2025-03-14 16:39:00. You may omit the time.
 Input Date:");
 
             var inputDate = _console.ReadLine();
-            var parsedDate = DateTimeHelper.TryParseUserDate(inputDate);
+            var parsedDate = DateTimeHelper.TryParseUserDate(inputDate.Trim());
 
             if (parsedDate.HasValue)
             {
@@ -282,6 +282,7 @@ Input Date:");
             {
                 throw new ArgumentException("You must choose a valid index!");
             }
+
             completionIndex -= 1;
             Manager.RemoveCompletion(habit.Id, habit.Completions[completionIndex]);
             _console.WriteLine($"Completion {habit.Completions[completionIndex]} deleted.");
@@ -369,10 +370,12 @@ Input Date:");
         private void Importer()
         {
             _console.WriteLine("=== Import Data ===");
-            _console.WriteLine("Please be aware that currently there is only the option to import from Habitica. Further importing options will be available in the future.");
+            _console.WriteLine(
+                "Please be aware that currently there is only the option to import from Habitica. Further importing options will be available in the future.");
             _console.WriteLine("Importing your habits more than once will duplicate them.");
 
-            _console.WriteLine("From the directory you opened HabitTracker in, please type the relative or absolute path to your Habitica habits user data. Leave blank if you want to go back.");
+            _console.WriteLine(
+                "From the directory you opened HabitTracker in, please type the relative or absolute path to your Habitica habits user data. Leave blank if you want to go back.");
             _console.Write("File path (press enter to accept): ");
             var filePath = _console.ReadLine();
 
