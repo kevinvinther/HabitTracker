@@ -11,6 +11,9 @@ namespace HabitTracker
         private string _name;
         private long _id;
 
+        private int[]? _streakCache;
+        private bool _isCacheValid;
+
         public long Id => _id;
         public string Name => _name;
         public List<DateTime> Completions => _completions;
@@ -54,6 +57,12 @@ namespace HabitTracker
             return _name;
         }
 
+        private void InvalidateCache()
+        {
+            _streakCache = null;
+            _isCacheValid = false;
+        }
+
         /// <summary>
         /// Adds a completion date to the habit
         /// </summary>
@@ -61,6 +70,7 @@ namespace HabitTracker
         public void AddCompletion(DateTime date)
         {
             _completions.Add(date);
+            InvalidateCache();
         }
 
         /// <summary>
@@ -70,7 +80,12 @@ namespace HabitTracker
         /// <returns>True if successfully removed, false if not.</returns>
         public bool RemoveCompletion(DateTime date)
         {
-            return _completions.Remove(date);
+            var removed = _completions.Remove(date);
+
+            if (removed)
+                InvalidateCache();
+
+            return removed;
         }
 
         /// <summary>
@@ -83,7 +98,7 @@ namespace HabitTracker
         }
 
         /// <summary>
-        /// Returns a list of all completion dates, if they exist. If they don't
+        /// Returns a list of all completion dates, if they exist. If they don't,
         /// returns a string stating this.
         /// </summary>
         public string GetCompletionDates()
@@ -104,45 +119,52 @@ namespace HabitTracker
 
         /// <summary>
         /// Returns an array counting the streak, where the index $i$ is the
-        /// streakat day $i$ after the first completion. Thus, if the habit had
+        /// streak at day $i$ after the first completion. Thus, if the habit had
         /// three completions, followed by a weeks break,
-        /// GetSreakArray()[0..2] = [1,2,3], and
-        /// GetStreakArray()[4..11] = [0,0...].
+        /// ComputeStreakArray()[0..2] = [1,2,3], and
+        /// ComputeStreakArray()[4..11] = [0,0...].
         /// If the user then resumes their streak, one day after their week break,
         /// it will continue counting from 1. E.g. GetStreakDay[12] = 1, etc.
         /// </summary>
-        /// <param name="until">The date you want until</param>
         /// <returns>An array containing the streak at $i$ days after first
         /// completion day</returns>
-        private int[] GetStreakArray()
+        private int[] ComputeStreakArray()
         {
+            var streaks = new List<int>();
+            var currentStreak = 0;
+
             if (!_completions.Any())
-            {
                 return [0];
-            }
 
-            List<int> streaks = new List<int>();
-            int currentStreak = 0;
-
-            var min = _completions.Min().Date;
-
+            var startDate = _completions.Min().Date;
             var completionDates = _completions.Select(d => d.Date).ToList();
 
-            for (DateTime date = min; date <= DateTime.Today; date = date.AddDays(1))
+            for (var date = startDate; date <= DateTime.Today; date = date.AddDays(1))
             {
-                if (completionDates.Contains(date.Date))
+                if (completionDates.Contains(date))
                 {
                     currentStreak += 1;
-                    streaks.Add(currentStreak);
                 }
                 else
                 {
                     currentStreak = 0;
-                    streaks.Add(currentStreak);
                 }
+
+                streaks.Add(currentStreak);
             }
 
             return streaks.ToArray();
+        }
+
+        private int[] GetStreakArray()
+        {
+            if (!_isCacheValid || _streakCache == null)
+            {
+                _streakCache = ComputeStreakArray();
+                _isCacheValid = true;
+            }
+
+            return _streakCache;
         }
 
         public int GetCurrentStreak()
